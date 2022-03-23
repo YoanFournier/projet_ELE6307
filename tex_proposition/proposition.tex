@@ -28,9 +28,9 @@
 \newcommand{\firstauthor}{Yoan \textbf{Fournier}}
 \newcommand{\firstregistrationnumber}{1958736}
 \newcommand{\secondauthor}{Victor \textbf{Gaudreau-Blouin}}
-\newcommand{\secondregistrationnumber}{??????}
+\newcommand{\secondregistrationnumber}{1958297}
 \newcommand{\reportnumber}{}
-\newcommand{\firsttitle}{???Analyse énergétique d'un processeur vectoriel pour des calculs de DNN???}
+\newcommand{\firsttitle}{Analyse énergétique d'un processeur vectoriel pour des calculs de DNN}
 \newcommand{\secondtitle}{Proposition}
 %-----------------------------------------------------------------%
 
@@ -128,10 +128,25 @@
     L'architecture sur laquelle se basera notre modélisation est sur celle du coprocesseur 
     vectoriel ARA \cite{ara_paper}. Ce coprocesseur est une extension vectorielle du processeur scalaire
     RISCV CVA6. Le fonctionnement d’ARA se base sur le concept de \textit{Lanes}. 
-    La figure \ref{fig:ara_arch} présente l'architecture d’ARA \cite{bougenot_2020}. %TODO: Explication de l'arch
+    La figure \ref{fig:ara_arch} présente l'architecture d’ARA \cite{bougenot_2020}.
+    Le coprocesseur ARA possède un nombre d'allées, ou \textit{Lanes}, qui sont capables de traiter des
+    éléments vectoriels indépendament. Le routage des données vers ces \textit{Lanes} grandit évidemment en complexité
+    avec le nombre de \textit{Lanes}. Le \textit{Sequencer} s'occupe de lire les instructions à exécuter 
+    et transmettre les informations correctes au \textit{Vector Load and Store Unit} (VLSU), 
+    \textit{Slide Unit} (SLDU) ou aux \textit{Lanes}. Le VLSU est responsable de générer les bonnes
+    addresses, amenant les données séquentiellement vers et depuis les \textit{Lanes}. 
+    Le SLDU exécute des opérations qui n'ont pas d'indépendance entre les \textit{Lanes}.
+    Finalement, chaque \textit{Lane} a son propre \textit{sequencer} pour les instructions à exécuter
+    sur son élément vectoriel. Le reste de la \textit{Lane} peut être considéré comme un PE, avec sa mémoire locale,
+    un étage de conversion et un étage d'exécution.
 
     La première étape du projet visera à modéliser l'architecture d'une \textit{Lane} à
-    l'aide de Timeloop/Accelergy \cite{timeloop}. %TODO: présenté timeloop accerlegy real quick
+    l'aide de Timeloop/Accelergy \cite{timeloop}.
+    Timeloop/Accelergy est un simulateur d'architecture d'accélérateurs de DNN permettant nous permettant de 
+    définir une architecture et un flot de données. Timeloop se charge de calculer les accès à la mémoire et 
+    aux PE, tandis qu'Accelergy estime l'énergie nécessaire à chaque opération. En définissant correctement
+    les coûts d'accès et l'architecture correctement, nous pouvons avoir une bonne approximation de l'efficacité 
+    énergétique de l'architecture en question pour un certain flot de données.
     L'architecture présentée à la figure \ref{fig:lane_arch}
     est plutôt complexe, mais elle peut, à sa plus simple expression, être modélisée comme
     un PE avec une mémoire locale de 8 données. Ainsi, par la suite, l'architecture globale
@@ -144,12 +159,12 @@
     \textit{Lanes}. Ensuite, d'autres paramètres comme la taille en bits des poids pourront
     être modifiés afin d'évaluer leur impact sur la performance énergétique.
 
-    % TODO: Calcul GFLOP/W
     La mesure de performance qui sera utilisée est une mesure d'efficacité en GFLOP/J. La commande
     \textit{timeloop mapper} donne l'énergie totale et le nombre de cycles pour le mapping entre un problème et une architecture.
     On peut donc calculer les GFLOP/J comme ceci :
     $$\text{GFLOP/J} = \frac{\#cycles \times \#lanes}{E_{tot}}$$
-
+    Avec une fréquence d'horloge connue, nous pouvons évaluer la puissance nécessaire pour le circuit comme ceci:
+    $$P = f \times \#lanes \times \frac{E}{op}$$
 \section*{Objectifs et résultats}
     L'objectif du projet et de comparer l'efficacité et l'évolutivité d'un processeur 
     vectoriel vis-à-vis un processeur scalaire plus standard pour les types de calculs
