@@ -145,7 +145,10 @@
     être modifiés afin d'évaluer leur impact sur la performance énergétique.
 
     % TODO: Calcul GFLOP/W
-    
+    La mesure de performance qui sera utilisée est une mesure d'efficacité en GFLOP/J. La commande
+    \textit{timeloop mapper} donne l'énergie totale et le nombre de cycles pour le mapping entre un problème et une architecture.
+    On peut donc calculer les GFLOP/J comme ceci :
+    $$\text{GFLOP/J} = \frac{\#cycles \times \#lanes}{E_{tot}}$$
 
 \section*{Objectifs et résultats}
     L'objectif du projet et de comparer l'efficacité et l'évolutivité d'un processeur 
@@ -153,7 +156,7 @@
     principalement utilisés dans des DNNs. Le projet vise à démontrer qu'il est avantageux
     d'opter pour une architecture vectorielle.
 
-    Les résultats présentés seront les mesures d'efficacité énergétique en GFLOP/W pour
+    Les résultats présentés seront les mesures d'efficacité énergétique en GFLOP/J pour
     un processeur scalaire (1 \textit{Lanes}) et un processeur vectoriel à (2, 4, 8, 16 \textit{Lanes}).
 
 {\bibliography{refs}}
