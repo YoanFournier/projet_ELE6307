@@ -1,4 +1,4 @@
-\documentclass[10pt,letterpaper]{article}
+\documentclass[11pt,letterpaper]{article}
 
 %\usepackage[latin1]{inputenc} 
 \usepackage[utf8]{inputenc}
@@ -107,9 +107,75 @@
 \normalsize
 
 \section*{Présentation du sujet}
-\section*{Méthodologie}
-\section*{Objectifs et résultats}
+    Dans les dernières années, l'utilisation de réseaux de neurones profonds (DNN) pour
+    résoudre différentes tâches a beaucoup augmenté. Ces DNNs nécessitent des puissances
+    de calculs considérables, mais à la fois nécessitent une bonne efficacité énergétique 
+    étant donné leur déploiement dans des appareils mobiles. Bien que les processeurs 
+    généralistes que l'on retrouve aujourd'hui ont augmenté rapidement en performance,
+    les limitations du \textit{Dennard Scaling} se font ressentir. Il est donc souhaitable
+    de trouver une autre approche pour accélérer de façon efficace les calculs dans les DNNs.
+    Une manière intéressante pour l'accélération des calculs pour des DNNs est l'utilisation
+    de processeurs vectoriels plutôt que des processeurs scalaires standards. Ces processeurs
+    utilisent un jeu d'instruction SIMD (\textit{Single instruction, Multiple Data}) plutôt 
+    que SISD (\textit{Single instruction, Single data}). Ainsi une instruction SIMD peut
+    performer la même opération sur plusieurs données plutôt qu'une seule, ce qui permet 
+    de plus facilement augmenter le parallélisme des calculs. Le projet proposé vise donc 
+    à étudier l'efficacité énergétique pour différentes configurations de processeurs 
+    vectoriels en comparant cette efficacité avec une architecture de processeur scalaire 
+    standard.
 
+\section*{Méthodologie}
+    L'architecture sur laquelle se basera notre modélisation est sur celle du coprocesseur 
+    vectoriel ARA \cite{ara_paper}. Ce coprocesseur est une extension vectorielle du processeur scalaire
+    RISCV CVA6. Le fonctionnement de ARA se base sur le concept de \textit{Lanes}. 
+    La figure \ref{fig:ara_arch} présente l'architecture de ARA \cite{bougenot_2020}. %TODO: Explication de l'arch
+
+    La première étape du projet visera à modéliser l'architecture d'une \textit{Lane} à
+    l'aide de Timeloop/Accelergy \cite{timeloop}. %TODO: présenté timeloop accerlegy real quick
+    L'architecture présentée à la figure \ref{fig:lane_arch}
+    est plutôt complexe, mais elle peut, à sa plus simple expression, être modélisée comme
+    un PE avec une mémoire locale de 8 données. Ainsi, par la suite, l'architecture globale
+    sera modélisée en combinant un nombre paramétrable de \textit{Lanes} à une mémoire globale.
+    Le processeur scalaire, lui peut être modélisé en utilisant une seule \textit{Lane}.
+
+    La deuxième étape utilisera \textit{timeloop mapper} afin de venir analyser la consommation
+    énergétique de l'architecture pour un problème standard de convolution comme, par exemple,
+    une des couches convolutive du DNN VGG16. La consommation sera évalué pour 2, 4, 8 et 16 
+    \textit{Lanes}. Ensuite, d'autres paramètres comme la taille en bits des poids pourront
+    être modifiés afin d'évaluer leur impact sur la performance énergétique.
+
+    % TODO: Calcul GFLOP/W
+    
+
+\section*{Objectifs et résultats}
+    L'objectif du projet et de comparer l'efficacité et l'évolutivité d'un processeur 
+    vectoriel vis-à-vis un processeur scalaire plus standard pour les types de calculs
+    principalement utilisées dans des DNNs. Le projet vise à démontrer qu'il est avantageux
+    d'opter pour une architecture vectorielle.
+
+    Les résultats présentés seront les mesures d'éfficacité énergétique en GFLOP/W pour
+    un processeur scalaire (1 \text{Lanes}) et un processeur vectoriel à (2, 4, 8, 16 \text{Lanes}).
+
+{\bibliography{refs}}
+    \bibliographystyle{abbrv}
+
+\section*{Annexes}
+    \begin{figure}[H]
+        \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=1.1\linewidth]{ara_arch.png}
+        \caption{Arch. globale}
+        \label{fig:top_arch}
+        \end{subfigure}%
+        \begin{subfigure}{.5\textwidth}
+        \centering
+        \includegraphics[width=.65\linewidth]{lane_arch.png}
+        \caption{Arch. \textit{Lane}}
+        \label{fig:lane_arch}
+        \end{subfigure}
+        \caption{Architecture de ARA}
+        \label{fig:ara_arch}
+    \end{figure}
 
 \end{document} 
 %-----------------------------------------------------------------%
