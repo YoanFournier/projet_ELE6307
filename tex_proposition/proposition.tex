@@ -127,8 +127,8 @@
 \section*{Méthodologie}
     L'architecture sur laquelle se basera notre modélisation est sur celle du coprocesseur 
     vectoriel ARA \cite{ara_paper}. Ce coprocesseur est une extension vectorielle du processeur scalaire
-    RISCV CVA6. Le fonctionnement de ARA se base sur le concept de \textit{Lanes}. 
-    La figure \ref{fig:ara_arch} présente l'architecture de ARA \cite{bougenot_2020}. %TODO: Explication de l'arch
+    RISCV CVA6. Le fonctionnement d’ARA se base sur le concept de \textit{Lanes}. 
+    La figure \ref{fig:ara_arch} présente l'architecture d’ARA \cite{bougenot_2020}. %TODO: Explication de l'arch
 
     La première étape du projet visera à modéliser l'architecture d'une \textit{Lane} à
     l'aide de Timeloop/Accelergy \cite{timeloop}. %TODO: présenté timeloop accerlegy real quick
@@ -140,7 +140,7 @@
 
     La deuxième étape utilisera \textit{timeloop mapper} afin de venir analyser la consommation
     énergétique de l'architecture pour un problème standard de convolution comme, par exemple,
-    une des couches convolutive du DNN VGG16. La consommation sera évalué pour 2, 4, 8 et 16 
+    une des couches convolutives du DNN VGG16. La consommation sera évaluée pour 2, 4, 8 et 16 
     \textit{Lanes}. Ensuite, d'autres paramètres comme la taille en bits des poids pourront
     être modifiés afin d'évaluer leur impact sur la performance énergétique.
 
@@ -150,10 +150,10 @@
 \section*{Objectifs et résultats}
     L'objectif du projet et de comparer l'efficacité et l'évolutivité d'un processeur 
     vectoriel vis-à-vis un processeur scalaire plus standard pour les types de calculs
-    principalement utilisées dans des DNNs. Le projet vise à démontrer qu'il est avantageux
+    principalement utilisés dans des DNNs. Le projet vise à démontrer qu'il est avantageux
     d'opter pour une architecture vectorielle.
 
-    Les résultats présentés seront les mesures d'éfficacité énergétique en GFLOP/W pour
+    Les résultats présentés seront les mesures d'efficacité énergétique en GFLOP/W pour
     un processeur scalaire (1 \text{Lanes}) et un processeur vectoriel à (2, 4, 8, 16 \text{Lanes}).
 
 {\bibliography{refs}}
@@ -173,7 +173,7 @@
         \caption{Arch. \textit{Lane}}
         \label{fig:lane_arch}
         \end{subfigure}
-        \caption{Architecture de ARA}
+        \caption{Architecture d'ARA}
         \label{fig:ara_arch}
     \end{figure}
 
