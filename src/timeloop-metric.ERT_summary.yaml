@@ -1,7 +1,7 @@
 ERT_summary:
   version: 0.3
   table_summary:
-  - name: ARA.CHIP.LANE.BANK
+  - name: ARA.CHIP.LANE.BANK[0..3]
     actions:
     - name: read
       average_energy: 1.0
@@ -14,9 +14,9 @@ ERT_summary:
     - name: idle
       energy: 0
     primitive_estimation(s):
-    - name: ARA.CHIP.LANE.BANK
+    - name: ARA.CHIP.LANE.BANK[0..3]
       estimator: dummy_table
-  - name: ARA.CHIP.LANE.MACC
+  - name: ARA.CHIP.LANE.MACC[0..3]
     actions:
     - name: mac_random
       energy: 1
@@ -27,7 +27,7 @@ ERT_summary:
     - name: idle
       energy: 0
     primitive_estimation(s):
-    - name: ARA.CHIP.LANE.MACC
+    - name: ARA.CHIP.LANE.MACC[0..3]
       estimator: dummy_table
   - name: ARA.CHIP.L1_CACHE
     actions:
