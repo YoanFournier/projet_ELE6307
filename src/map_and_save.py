@@ -34,10 +34,9 @@ def results_parser(path='src/output/timeloop-mapper.stats.txt'):
     return tot_energy, tot_cycles, tot_area, tot_util
 
 problem = 'VGG02_layer1'
-command = "timeloop-mapper src/arch/ARA_arch.yaml src/map/mapper.yaml src/prob/{0}.yaml -o src/output/".format(problem) + " >/dev/null 2>&1"
 
 tech_node_list = [22, 45]
-num_lanes_list = [1, 2, 4, 8, 16]
+num_lanes_list = [2]
 
 tot_energy_list = []
 tot_cycles_list = []
@@ -50,6 +49,9 @@ for tech_node in tech_node_list:
 
         print("\t---------------------------------------")
         print("\tSTARTING TIMELOOP MAPPER FOR {0} LANES".format(num_lanes))
+
+        out_folder = 'src/output_{0}nm/{1}_lanes/'.format(tech_node, num_lanes)
+        command = "timeloop-mapper src/arch/ARA_arch.yaml src/map/mapper.yaml src/prob/{0}.yaml -o {1}".format(problem, out_folder) + " >/dev/null 2>&1"
 
         arch_modif(num_lanes=num_lanes, tech_node=tech_node)
         os.system(command)

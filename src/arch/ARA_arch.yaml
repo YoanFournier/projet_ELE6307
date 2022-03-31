@@ -15,7 +15,7 @@ architecture:
     subtree:
     - name: CHIP
       attributes:
-        technology: 22nm
+        technology: 45nm
 
       local:
       - name: L1_CACHE
@@ -29,14 +29,14 @@ architecture:
       subtree:
       - name: LANE
         local:
-        - name: BANK
+        - name: BANK[0..1]
           class: regfile
           attributes:
             depth: 8
             width: 64
             block-size: 8
             word-bits: 8
-        - name: MACC
+        - name: MACC[0..1]
           class: intmac
           attributes:
             datawidth: 64
