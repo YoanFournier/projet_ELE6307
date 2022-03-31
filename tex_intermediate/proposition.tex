@@ -1,0 +1,113 @@
+\documentclass[11pt,letterpaper]{article}
+
+%\usepackage[latin1]{inputenc} 
+\usepackage[utf8]{inputenc}
+\usepackage[cyr]{aeguill}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{textpos}
+\usepackage{graphicx}
+\usepackage[french]{babel}
+\usepackage{color}
+\usepackage{array}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage{mathrsfs}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\addto\captionsfrench{\def\tablename{Tableau}}
+
+%-----------------------------------------------------------------%
+% Definitions
+\newcommand{\session}{Hiver 2022}
+\newcommand{\firstauthor}{Yoan \textbf{Fournier}}
+\newcommand{\firstregistrationnumber}{1958736}
+\newcommand{\secondauthor}{Victor \textbf{Gaudreau-Blouin}}
+\newcommand{\secondregistrationnumber}{1958297}
+\newcommand{\reportnumber}{}
+\newcommand{\firsttitle}{Analyse énergétique d'un processeur vectoriel pour des calculs de DNN}
+\newcommand{\secondtitle}{Rapport intermédiaire}
+%-----------------------------------------------------------------%
+
+
+
+\oddsidemargin 0pt
+\topmargin 0pt
+\textwidth 6.5in
+\textheight 8.1in
+
+\setlength{\parskip}{1em}
+
+\definecolor{bleu_poly}{RGB}{65,170,230}
+\definecolor{vert_poly}{RGB}{140,200,60}
+\definecolor{orange_poly}{RGB}{250,150,30}
+\definecolor{rouge_poly}{RGB}{185,30,50}
+\definecolor{gris_poly}{RGB}{166,168,171}
+
+
+\title{\vspace{-2.5cm} \noindent\makebox[\linewidth]{\color{rouge_poly}{\rule{\textwidth}{1.5pt}}}
+        \begin{center}
+        \begin{tabular}{m{6.5cm}m{6cm}}
+        \textbf{ \huge Projet \reportnumber}  & \includegraphics[width=0.4\textwidth]{Polytechnique_signature-CMYK-droite_FR.eps}
+        \end{tabular}
+        \end{center}
+        \noindent\makebox[\linewidth]{\color{rouge_poly}{\rule{\textwidth}{1.5pt}}}
+        \\ \  \\
+        \Huge \firsttitle \\ \secondtitle  
+        \\ \ \\
+        \LARGE ELE6307 - Machines neuronales : architectures et applications
+        }
+
+\author{\session \\ Département de génie électrique \\ École Polytechnique de Montréal} 
+
+\date{Dernière mise à jour: \today}
+
+\pagestyle{fancy}
+
+\lfoot{\session}
+\cfoot{ELE6307 - Machines neuronales : architectures et applications}
+\rfoot{\thepage/\pageref{LastPage}}
+\chead{}
+\lhead{\emph{Projet -- \firstauthor  \, (\firstregistrationnumber)/\secondauthor\,  (\secondregistrationnumber)}}
+\rhead{\includegraphics[width=2.5cm]{Polytechnique_signature-CMYK-droite_FR.eps}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt} 
+\setlength{\headheight}{45pt}
+
+
+\graphicspath{{fig/}}
+
+
+\newcommand{\vb}[1]{\mathbf{#1}}
+\newcommand{\bs}[1]{\boldsymbol{#1}}
+
+
+%-----------------------------------------------------------------%
+% SOF
+\begin{document}
+\maketitle
+\noindent\makebox[\linewidth]{\color{rouge_poly}{\rule{\textwidth}{1.5pt}}} 
+
+
+\noindent \LARGE \firstauthor  \hfill \firstregistrationnumber
+
+
+\noindent \LARGE \secondauthor \hfill \secondregistrationnumber
+
+
+\noindent\makebox[\linewidth]{\color{rouge_poly}{\rule{\textwidth}{1.5pt}}}
+
+
+\newpage
+\normalsize
+
+
+
+\end{document} 
+%-----------------------------------------------------------------%
+% EOF

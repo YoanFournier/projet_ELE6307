@@ -1,0 +1,43 @@
+architecture:
+  version: 0.2
+  
+  subtree:
+  - name: ARA
+    
+    local:
+    - name: OFFCHIP_MEM
+      class: DRAM
+      attributes:
+        width: 64
+        block-size: 8
+        word-bits: 8
+
+    subtree:
+    - name: CHIP
+      attributes:
+        technology: 22nm
+
+      local:
+      - name: L1_CACHE
+        class: SRAM
+        attributes:
+          depth: 8192
+          width: 64
+          block-size: 8
+          word-bits: 8
+        
+      subtree:
+      - name: LANE
+      
+        local:
+        - name: BANK[0..15]
+          class: regfile
+          attributes:
+            depth: 8
+            width: 64
+            block-size: 8
+            word-bits: 8
+        - name: MACC[0..15]
+          class: intmac
+          attributes:
+            datawidth: 64
