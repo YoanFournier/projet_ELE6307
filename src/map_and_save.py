@@ -36,7 +36,7 @@ def results_parser(path='src/output/timeloop-mapper.stats.txt'):
 problem = 'VGG02_layer1'
 
 tech_node_list = [22, 45]
-num_lanes_list = [2]
+num_lanes_list = [1,2,4,8,16]
 
 tot_energy_list = []
 tot_cycles_list = []
