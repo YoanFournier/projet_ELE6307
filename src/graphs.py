@@ -116,12 +116,12 @@ fig, ax1 = plt.subplots()
 color = 'tab:red'
 plt.xscale('log',basex=2)
 ax1.set_xlabel('Number of Lanes')
-ax1.set_ylabel('Area [nm2]', color=color)
+ax1.set_ylabel('Area [mm^2]', color=color)
 lns1 = ax1.plot(num_lanes_list, tot_area[22], 'rx--', linewidth=0.75, fillstyle='none', label='22nm')
 
 ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 color = 'tab:blue'
-ax2.set_ylabel('Area [nm2]', color=color)  # we already handled the x-label with ax1
+ax2.set_ylabel('Area [mm^2]', color=color)  # we already handled the x-label with ax1
 lns2 = ax2.plot(num_lanes_list, tot_area[45], 'bo-', linewidth=0.75, fillstyle='none', label='45nm')
 
 plt.grid()
