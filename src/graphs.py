@@ -1,5 +1,6 @@
 import os
 import re
+import matplotlib
 import matplotlib.pyplot as plt
 
 
@@ -64,32 +65,21 @@ ax1.legend(lns, labs, loc='best')
 
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.savefig('tex_intermediate/fig/energy.png')
-
+plt.close()
 
 # Cycles
-fig, ax1 = plt.subplots()
-
-color = 'tab:red'
+plt.plot(num_lanes_list, tot_cycles[22], 'rx--', linewidth=0.75, fillstyle='none')
+plt.plot(num_lanes_list, tot_cycles[45], 'bo-', linewidth=0.75, fillstyle='none')
+plt.legend(['22nm', '45nm'])
+plt.ylabel('Cycles')
+plt.xlabel('Number of Lanes')
 plt.xscale('log',basex=2)
-ax1.set_xlabel('Number of Lanes')
-ax1.set_ylabel('Cycles', color=color)
-lns1 = ax1.plot(num_lanes_list, tot_cycles[22], 'rx--', linewidth=0.75, fillstyle='none', label='22nm')
-
-ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-color = 'tab:blue'
-ax2.set_ylabel('Cycles', color=color)  # we already handled the x-label with ax1
-lns2 = ax2.plot(num_lanes_list, tot_cycles[45], 'bo-', linewidth=0.75, fillstyle='none', label='45nm')
-
+plt.yscale('log',basey=2)
 plt.grid()
 plt.minorticks_on()
 plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-
-lns = lns1+lns2
-labs = [l.get_label() for l in lns]
-ax1.legend(lns, labs, loc='best')
-
-fig.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.savefig('tex_intermediate/fig/cycles.png')
+plt.close()
 
 
 # Area
@@ -116,28 +106,19 @@ ax1.legend(lns, labs, loc='upper left')
 
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.savefig('tex_intermediate/fig/area.png')
-
+plt.close()
 
 # Utilization
-fig, ax1 = plt.subplots()
-
-color = 'tab:red'
+plt.plot(num_lanes_list, tot_util[22], 'rx--', linewidth=0.75, fillstyle='none')
+plt.plot(num_lanes_list, tot_util[45], 'bo-', linewidth=0.75, fillstyle='none')
+ax = plt.gca()
+ax.set_ylim([0, 1.1])
+plt.legend(['22nm', '45nm'])
+plt.ylabel('Utilization %')
+plt.xlabel('Number of Lanes')
 plt.xscale('log',basex=2)
-ax1.set_xlabel('Number of Lanes')
-ax1.set_ylabel('Utilization %', color=color)
-lns1 = ax1.plot(num_lanes_list, tot_util[22], 'rx--', linewidth=0.75, fillstyle='none', label='22nm')
-
-ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-color = 'tab:blue'
-ax2.set_ylabel('Utilization %', color=color)  # we already handled the x-label with ax1
-lns2 = ax2.plot(num_lanes_list, tot_util[45], 'bo-', linewidth=0.75, fillstyle='none', label='45nm')
-
 plt.grid()
 plt.minorticks_on()
 plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-
-lns = lns1+lns2
-labs = [l.get_label() for l in lns]
-ax1.legend(lns, labs, loc='best')
-fig.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.savefig('tex_intermediate/fig/utilization.png')
+plt.close()
