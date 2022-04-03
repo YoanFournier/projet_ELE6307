@@ -30,16 +30,20 @@ tot_energy = {tech:[None]*len(num_lanes_list) for tech in tech_node_list}
 tot_cycles = {tech:[None]*len(num_lanes_list) for tech in tech_node_list}
 tot_area = {tech:[None]*len(num_lanes_list) for tech in tech_node_list} 
 tot_util = {tech:[None]*len(num_lanes_list) for tech in tech_node_list}
+tot_perf = {tech:[None]*len(num_lanes_list) for tech in tech_node_list}
 
 
 for tech in tech_node_list:
     for i, num_lanes in enumerate(num_lanes_list):
         path = f"src/output_{tech}nm/{num_lanes}_lanes/timeloop-mapper.stats.txt"
         energy, cycles, area, util = results_parser(path)
-        tot_energy[tech][i] = energy
+        tot_energy[tech][i] = energy # uJ
         tot_cycles[tech][i] = cycles
         tot_area[tech][i] = area
         tot_util[tech][i] = util
+        tot_perf[tech][i] = util*cycles*num_lanes/(energy*10**3) # Conversion to GFLOP/J (*10^6/10^9 => 1/10^3)
+
+
 
 # Energy 
 fig, ax1 = plt.subplots()
@@ -47,12 +51,12 @@ fig, ax1 = plt.subplots()
 color = 'tab:red'
 plt.xscale('log',basex=2)
 ax1.set_xlabel('Number of Lanes')
-ax1.set_ylabel('Energy [pJ]', color=color)
+ax1.set_ylabel('Energy [uJ]', color=color)
 lns1 = ax1.plot(num_lanes_list, tot_energy[22], 'rx--', linewidth=0.75, fillstyle='none', label='22nm')
 
 ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
 color = 'tab:blue'
-ax2.set_ylabel('Energy [pJ]', color=color)  # we already handled the x-label with ax1
+ax2.set_ylabel('Energy [uJ]', color=color)  # we already handled the x-label with ax1
 lns2 = ax2.plot(num_lanes_list, tot_energy[45], 'bo-', linewidth=0.75, fillstyle='none', label='45nm')
 
 plt.grid()
@@ -121,4 +125,31 @@ plt.grid()
 plt.minorticks_on()
 plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
 plt.savefig('tex_intermediate/fig/utilization.png')
+plt.close()
+
+
+# Performance
+fig, ax1 = plt.subplots()
+
+color = 'tab:red'
+plt.xscale('log',basex=2)
+ax1.set_xlabel('Number of Lanes')
+ax1.set_ylabel('Performance [GFLOP/J]', color=color)
+lns1 = ax1.plot(num_lanes_list, tot_perf[22], 'rx--', linewidth=0.75, fillstyle='none', label='22nm')
+
+ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
+color = 'tab:blue'
+ax2.set_ylabel('Performance [GFLOP/J]', color=color)  # we already handled the x-label with ax1
+lns2 = ax2.plot(num_lanes_list, tot_perf[45], 'bo-', linewidth=0.75, fillstyle='none', label='45nm')
+
+plt.grid()
+plt.minorticks_on()
+plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
+
+lns = lns1+lns2
+labs = [l.get_label() for l in lns]
+ax1.legend(lns, labs, loc='upper left')
+
+fig.tight_layout()  # otherwise the right y-label is slightly clipped
+plt.savefig('tex_intermediate/fig/performance.png')
 plt.close()
