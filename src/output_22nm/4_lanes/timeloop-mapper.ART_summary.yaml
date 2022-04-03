@@ -1,0 +1,15 @@
+ART_summary:
+  version: 0.3
+  table_summary:
+  - name: ARA.CHIP.LANE.BANK[0..3]
+    area: 1
+    primitive_estimations: dummy_table
+  - name: ARA.CHIP.LANE.MACC[0..3]
+    area: 1
+    primitive_estimations: dummy_table
+  - name: ARA.CHIP.L1_CACHE
+    area: 58601.4
+    primitive_estimations: Cacti
+  - name: ARA.OFFCHIP_MEM
+    area: 0
+    primitive_estimations: Cacti

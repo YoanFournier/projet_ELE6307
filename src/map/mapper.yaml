@@ -2,8 +2,9 @@ mapper:
   optimization-metrics:  [ energy ]
   #live-status: True
   #diagnostics: True
-  num-threads: 4
+  num-threads: 8
   timeout: 5000
+  search-size: 500000
   victory-condition: 10
   algorithm: random-pruned
-  max-permutations-per-if-visit: 16
+  max-permutations-per-if-visit: 4

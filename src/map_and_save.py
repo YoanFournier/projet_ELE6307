@@ -44,7 +44,7 @@ tot_area_list   = []
 tot_util_list   = []
  
 for tech_node in tech_node_list:
-    print("TECHNOLOGY NODE : {0}".format(tech_node))
+    print("TECHNOLOGY NODE : {0}nm".format(tech_node))
     for num_lanes in num_lanes_list:
 
         print("\t---------------------------------------")
@@ -56,7 +56,7 @@ for tech_node in tech_node_list:
         arch_modif(num_lanes=num_lanes, tech_node=tech_node)
         os.system(command)
 
-        tot_energy, tot_cycles, tot_area, tot_util = results_parser()   
+        tot_energy, tot_cycles, tot_area, tot_util = results_parser(out_folder + 'timeloop-mapper.stats.txt')   
 
         tot_energy_list.append(tot_energy) 
         tot_cycles_list.append(tot_cycles) 
