@@ -40,24 +40,6 @@ for tech in tech_node_list:
         tot_area[tech][i] = area
         tot_util[tech][i] = util
 
-print(tot_energy)
-print(tot_cycles)
-print(tot_area)
-print(tot_util)
-
-# Energy 
-# plt.plot(num_lanes_list, tot_energy[22], 'rx--', linewidth=0.75, fillstyle='none')
-# plt.plot(num_lanes_list, tot_energy[45], 'bo-', linewidth=0.75, fillstyle='none')
-# plt.legend(['22nm', '45nm'])
-# plt.ylabel('Energy [pJ]')
-# plt.xlabel('Number of Lanes')
-# plt.xscale('log',basex=2)
-# plt.grid()
-# plt.minorticks_on()
-# plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-# plt.savefig('tex_intermediate/fig/energy.png')
-# plt.close()
-
 # Energy 
 fig, ax1 = plt.subplots()
 
@@ -130,7 +112,7 @@ plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25
 
 lns = lns1+lns2
 labs = [l.get_label() for l in lns]
-ax1.legend(lns, labs, loc='best')
+ax1.legend(lns, labs, loc='upper left')
 
 fig.tight_layout()  # otherwise the right y-label is slightly clipped
 plt.savefig('tex_intermediate/fig/area.png')
