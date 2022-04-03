@@ -144,7 +144,7 @@
 
 \pagebreak
 \section*{Résultats}
-    % TODO: Performance GFLOP/W 
+    % TODO: Performance GFLOP/J 
     % TODO: Area (45nm + 22nm)
     \begin{multicols}{2}
         
@@ -179,8 +179,40 @@
         \label{fig:utilization}
     \end{figure}
 
-
     \end{multicols}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{performance.png}
+        \caption{Performance de ARA en GFLOP/J en fonction du nombre de \textit{Lanes} pour la couche 1 de VGG16}
+        \label{fig:performance}
+    \end{figure}
+
+On montre ci-haut les résultats d'aire, d'énergie, de nombre de cycles, d'utilisation et de performance 
+de ARA en fonction du nombre de \textit{Lanes} utilisé. Certains résultats sont attendus, comme la relation 
+linéaire entre le nombre de \textit{Lanes} et le nombre de cycles. En effet, en doublant le nombre de \textit{Lanes}, 
+il est normal de s'attendre à effectuer la tâche en la moitié du temps, pour autant que ces tâches sont indépendantes.
+Une certaine non-linéarité est observée pour les cas de 8 et 16 \textit{Lanes}, mais ceci est dû à l'utilisation 
+non-optimale des ressources disponibles, comme on peut le constater sur le graphique d'utilisation. La technologie 
+22nm tombe à 55% d'utilisation à 16 \textit{Lanes}, alors que la technologie 45nm atteint une utilisation un peu plus 
+haute, à 75%, mais à partir de 8 \textit{Lanes}.
+L'aire utilisée croît de manière linéaire. Une particularité à noter est que la différence d'aire sur la technologie 
+22nm est négligeabe, parce que la DRAM et la cache occupent une très grande proportion de l'espace total. 
+Le graphique d'énergie n'est pas aussi direct. On peut noter une tendance descendante dans le coût énergétique total 
+en augmentant le nombre de \textit{Lanes}, mais la courbe n'est pas exactement logarithmique. Ceci est dû en partie à 
+la façon que l'assignation (\textit{mapping}) du circuit est réalisé par timeloop. Comme le problème d'assignation
+est complexe, il n'est pas garanti de donner la solution optimale pour un ou plusieurs critères. Nous avons la liberté
+de contraindre son espace de recherche pour accélérer la recherche, mais en baissant la probabilité de trouver la 
+solution optimale. Il est donc possible que la solution optimale suive une courbe plus linéaire et surtout décroissante
+sur tout son intervalle. Un point intéressant à noter est que la technologie 45nm semble avoir une amélioration moins 
+grande que 22nm, avec 1.5\% de différence entre l'énergie d'une \textit{Lane} et celle à 16 \textit{Lanes}, versus 
+8.9\% entre sa consommation maximale et minimale. Finalement, le graphe de performance ilustre la combinaison de tous 
+ces facteurs. Ce graphe est obtenu avec la formule $$\text{GFLOP/J} = \frac{\%utilization \times \#cycles \times \#lanes}{E_{tot}}$$.
+On observe une tendance croissante semblant logarithmique. Encore une fois, on peut constater que la technologie 22nm 
+a une meilleure croissance de performance relative, avec 8.5\% versus 1.5\% pour 45nm. De plus, on observe que la 
+performance de la technologie 22nm avec une seule \textit{Lane} est très supérieure à la meilleure performance de la 
+technologie 45nm. Ceci nous indique que bien qu'on puisse observer des augmentations de performance en augmentant le nombre
+de \textit{Lanes}, le plus grand facteur est la technologie utilisée.
 
 
 \section*{Suite du projet}
