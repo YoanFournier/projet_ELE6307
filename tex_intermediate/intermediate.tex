@@ -168,6 +168,12 @@
     \end{figure}
     \begin{figure}[H]
         \centering
+        \includegraphics[width=\linewidth]{performance.png}
+        \caption{Performance de ARA en fonction du nombre de \textit{Lanes} pour la couche 1 de VGG16}
+        \label{fig:performance}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
         \includegraphics[width=\linewidth]{utilization.png}
         \caption{Utilisation de ARA en fonction du nombre de \textit{Lanes} pour la couche 1 de VGG16}
         \label{fig:utilization}
@@ -178,10 +184,30 @@
 
 
 \section*{Suite du projet}
-    % TODO: Modélisation de la cache
-    % TODO: Améliorer mapping pour 8 et 16 lanes
-    % TODO: Tester pour différents paramètres de problèmes (Différentes convolutions)
+    %TODO: Rappel des résultats obtenus
 
+    \noindent Pour le rapport final du projet, les aspects suivants seront étudiés plus en détail :
+    \begin{enumerate}
+        \item \textbf{Utilisation des PE pour 8 et 16 \text{Lanes} :}
+            Dans les résultats, on observe que l'allocation n'est pas optimale pour 8 et 16 \textit{Lanes}.
+            L'utilisation des PE n'est pas de 100\%. Il serait intéressant de voir si cela est causé par une 
+            recherche pas assez exhaustive des allocations ou si une allocation optimale est tout simplement 
+            impossible. Le rapport final cherchera à optimiser les paramètres de \textit{timeloop-mapper} afin
+            de tenter de converger vers de meilleures solutions.
+        \item \textbf{Étudier les allocations optimales :}
+            Ce présent rapport ne présente pas l'allocation optimale trouvée par Timeloop. Le rapport finale 
+            présentera plus en détail cette allocation. En effet, le problème est automatiquement partitionné
+            par Timeloop afin d'optimiser au maximum l'énergie consommée par l'architecture. Souvent cette métrique
+            s'optimise en essayant de réduire au maximum les accès mémoires et d'optimiser la localité des données.
+            L'analyse les allocations effectuées par Timeloop permettra de mieux comprendre l'approche optimale a utilisée
+            et permettra de déceler les goulots d'étranglement dans l'architecture proposée.
+        \item \textbf{Tester l'impact des paramètres du problème :} 
+            Le seul problème étudié dans le cadre de ce rapport intermédiaire est la couche 1 du modèle VGG16.
+            Afin d'avoir une meilleure idée de la performance de l'architecture, il serait intéressant de faire
+            varier les paramètres du problème comme le \text{kernel} ou la taille des tenseurs d'entrée. On pourrait
+            y observer une diminution de l'utilité d'avoir plusieurs \text{Lanes} lorsque les problèmes sont plus petits
+            puisqu'il devient plus difficile de paralléliser les calculs.
+    \end{enumerate}
 
 \end{document} 
 %-----------------------------------------------------------------%
