@@ -208,10 +208,16 @@
 
 \pagebreak
 \section*{Suite du projet}
-    %TODO: Rappel des résultats obtenus
 
     \begin{multicols}{2}
-        
+        Nos résultats préliminaires montrent bien la hausse de performance en augmentant le parallélisme. On 
+        observe toutefois que le problème d'allocation est difficile en augmentant le nombre de \textit{Lanes}, 
+        avec des solutions qui n'utilisent pas toutes les ressources. Ceci nous indique que les gains du parallélisme 
+        sont limités et que le travail du \textit{sequencer} de ARA doit augmenter de façon exponentielle avec le 
+        nombre de \textit{Lanes}. Finalement, nous pouvons constater que bien que le parallélisme améliore la performance,
+        il n'est pas comparable à utiliser une technologie plus compacte, tant que le \textit{Dennard Scaling} ne 
+        rentre pas en jeu.
+
     \noindent Pour le rapport final du projet, les aspects suivants seront étudiés plus en détail :
     \begin{enumerate}
         \item \textbf{Utilisation des PE pour 8 et 16 \text{Lanes} :}
