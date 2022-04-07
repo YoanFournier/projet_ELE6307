@@ -1,0 +1,11 @@
+ART:
+  version: 0.3
+  tables:
+  - name: ARA.CHIP.LANE.BANK
+    area: 435.22
+  - name: ARA.CHIP.LANE.MACC
+    area: 18758.0
+  - name: ARA.CHIP.L1_CACHE
+    area: 209046.0
+  - name: ARA.OFFCHIP_MEM
+    area: 0

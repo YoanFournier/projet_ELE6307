@@ -1,0 +1,57 @@
+ERT_summary:
+  version: 0.3
+  table_summary:
+  - name: ARA.CHIP.LANE.BANK[0..3]
+    actions:
+    - name: read
+      average_energy: 0.31076
+      max_energy: 0.59776
+      min_energy: 0.02377
+    - name: write
+      average_energy: 0.31076
+      max_energy: 0.59776
+      min_energy: 0.02377
+    - name: idle
+      energy: 0.02377
+    primitive_estimation(s):
+    - name: ARA.CHIP.LANE.BANK[0..3]
+      estimator: Aladdin_table
+  - name: ARA.CHIP.LANE.MACC[0..3]
+    actions:
+    - name: mac_random
+      energy: 34.6914
+    - name: mac_reused
+      energy: 29.5134
+    - name: mac_gated
+      energy: 1.1314
+    - name: idle
+      energy: 0.9838
+    primitive_estimation(s):
+    - name: ARA.CHIP.LANE.MACC[0..3]
+      estimator: Aladdin_table
+  - name: ARA.CHIP.L1_CACHE
+    actions:
+    - name: read
+      average_energy: 12.93613
+      max_energy: 25.8695
+      min_energy: 0.00276
+    - name: write
+      average_energy: 9.82568
+      max_energy: 19.6486
+      min_energy: 0.00276
+    - name: idle
+      energy: 0.00276
+    primitive_estimation(s):
+    - name: ARA.CHIP.L1_CACHE
+      estimator: Cacti
+  - name: ARA.OFFCHIP_MEM
+    actions:
+    - name: read
+      energy: 512
+    - name: write
+      energy: 512
+    - name: idle
+      energy: 0
+    primitive_estimation(s):
+    - name: ARA.OFFCHIP_MEM
+      estimator: Cacti

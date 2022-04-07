@@ -33,9 +33,9 @@ def results_parser(path='src/output/timeloop-mapper.stats.txt'):
         tot_util = float(re.findall("[0-9]+\.[0-9]+", tot_util)[0])
     return tot_energy, tot_cycles, tot_area, tot_util
 
-problem = 'VGG02_layer1'
+problems = ['AlexNet_layer1','AlexNet_layer2','AlexNet_layer3','VGG02_layer1','VGG02_layer2','VGG02_layer3']
 
-tech_node_list = [22, 45]
+tech_node_list = [45]
 num_lanes_list = [1,2,4,8,16]
 
 tot_energy_list = []
@@ -45,32 +45,37 @@ tot_util_list   = []
  
 for tech_node in tech_node_list:
     print("TECHNOLOGY NODE : {0}nm".format(tech_node))
-    for num_lanes in num_lanes_list:
 
+    for problem in problems:
         print("\t---------------------------------------")
-        print("\tSTARTING TIMELOOP MAPPER FOR {0} LANES".format(num_lanes))
+        print("\tPROBLEM :", problem)
 
-        out_folder = 'src/output_{0}nm/{1}_lanes/'.format(tech_node, num_lanes)
-        command = "timeloop-mapper src/arch/ARA_arch.yaml src/map/mapper.yaml src/prob/{0}.yaml -o {1}".format(problem, out_folder) + " >/dev/null 2>&1"
+        for num_lanes in num_lanes_list:
 
-        arch_modif(num_lanes=num_lanes, tech_node=tech_node)
-        os.system(command)
+            print("\t---------------------------------------")
+            print("\tSTARTING TIMELOOP MAPPER FOR {0} LANES".format(num_lanes))
 
-        tot_energy, tot_cycles, tot_area, tot_util = results_parser(out_folder + 'timeloop-mapper.stats.txt')   
+            out_folder = 'src/output_{0}nm/{1}/{2}_lanes/'.format(tech_node, problem, num_lanes)
+            command = "timeloop-mapper src/arch/ARA_arch.yaml src/map/mapper.yaml src/prob/{0}.yaml -o {1}".format(problem, out_folder) + " >/dev/null 2>&1"
 
-        tot_energy_list.append(tot_energy) 
-        tot_cycles_list.append(tot_cycles) 
-        tot_area_list.append(tot_area)
-        tot_util_list.append(tot_util)
+            print("\t\tCOMMAND:", command)
 
-        print("\t\tENERGY:", tot_energy)
-        print("\t\tCYCLES:", tot_cycles)
-        print("\t\tAREA:", tot_area)
-        print("\t\tUTILIZATION:", tot_util)
+            arch_modif(num_lanes=num_lanes, tech_node=tech_node)
+            os.system(command)
 
-        print("\tFINISHING TIMELOOP MAPPER FOR {0} LANES".format(num_lanes))
-        print("\t---------------------------------------")
+            tot_energy, tot_cycles, tot_area, tot_util = results_parser(out_folder + 'timeloop-mapper.stats.txt')   
 
+            tot_energy_list.append(tot_energy) 
+            tot_cycles_list.append(tot_cycles) 
+            tot_area_list.append(tot_area)
+            tot_util_list.append(tot_util)
+
+            print("\t\tENERGY:", tot_energy)
+            print("\t\tCYCLES:", tot_cycles)
+            print("\t\tAREA:", tot_area)
+            print("\t\tUTILIZATION:", tot_util)
+
+            print("\tFINISHING TIMELOOP MAPPER FOR {0} LANES".format(num_lanes))
 print("FINAL RESULTS : ")
 with open('src/results.txt', 'w') as file:
     file.write(str(tot_energy_list) + '\n')

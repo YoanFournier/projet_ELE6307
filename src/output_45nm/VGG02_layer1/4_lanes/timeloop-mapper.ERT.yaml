@@ -1,0 +1,118 @@
+ERT:
+  version: 0.3
+  tables:
+  - name: ARA.CHIP.LANE.BANK[0..3]
+    actions:
+    - name: read
+      arguments:
+        address_delta: 0
+        data_delta: 0
+      energy: 0.02377
+    - name: read
+      arguments:
+        address_delta: 0
+        data_delta: 1
+      energy: 0.57609
+    - name: read
+      arguments:
+        address_delta: 1
+        data_delta: 0
+      energy: 0.04544
+    - name: read
+      arguments:
+        address_delta: 1
+        data_delta: 1
+      energy: 0.59776
+    - name: write
+      arguments:
+        address_delta: 0
+        data_delta: 0
+      energy: 0.02377
+    - name: write
+      arguments:
+        address_delta: 0
+        data_delta: 1
+      energy: 0.57609
+    - name: write
+      arguments:
+        address_delta: 1
+        data_delta: 0
+      energy: 0.04544
+    - name: write
+      arguments:
+        address_delta: 1
+        data_delta: 1
+      energy: 0.59776
+    - name: idle
+      arguments: null
+      energy: 0.02377
+  - name: ARA.CHIP.LANE.MACC[0..3]
+    actions:
+    - name: mac_random
+      arguments: null
+      energy: 34.6914
+    - name: mac_reused
+      arguments: null
+      energy: 29.5134
+    - name: mac_gated
+      arguments: null
+      energy: 1.1314
+    - name: idle
+      arguments: null
+      energy: 0.9838
+  - name: ARA.CHIP.L1_CACHE
+    actions:
+    - name: read
+      arguments:
+        address_delta: 0
+        data_delta: 0
+      energy: 0.00276
+    - name: read
+      arguments:
+        address_delta: 0
+        data_delta: 1
+      energy: 18.10948
+    - name: read
+      arguments:
+        address_delta: 1
+        data_delta: 0
+      energy: 7.76278
+    - name: read
+      arguments:
+        address_delta: 1
+        data_delta: 1
+      energy: 25.8695
+    - name: write
+      arguments:
+        address_delta: 0
+        data_delta: 0
+      energy: 0.00276
+    - name: write
+      arguments:
+        address_delta: 0
+        data_delta: 1
+      energy: 13.75485
+    - name: write
+      arguments:
+        address_delta: 1
+        data_delta: 0
+      energy: 5.89651
+    - name: write
+      arguments:
+        address_delta: 1
+        data_delta: 1
+      energy: 19.6486
+    - name: idle
+      arguments: null
+      energy: 0.00276
+  - name: ARA.OFFCHIP_MEM
+    actions:
+    - name: read
+      arguments: null
+      energy: 512
+    - name: write
+      arguments: null
+      energy: 512
+    - name: idle
+      arguments: null
+      energy: 0
