@@ -4,18 +4,18 @@ OFFCHIP_MEM [ Weights:34848 (34848) Inputs:154587 (154587) Outputs:290400 (29040
 | for M in [0:2)
 |   for Q in [0:5)
 |     for P in [0:11)
-|       for C in [0:3)
 
-L1_CACHE [ Weights:5808 (5808) Inputs:1377 (1377) Outputs:2640 (2640) ] 
------------------------------------------------------------------------
-|         for P in [0:5)
+L1_CACHE [ Weights:17424 (17424) Inputs:4131 (4131) Outputs:2640 (2640) ] 
+-------------------------------------------------------------------------
+|       for P in [0:5)
+|         for R in [0:11)
 |           for M in [0:2)
-|             for R in [0:11)
-|               for S in [0:11)
-|                 for M in [0:8) (Spatial-X)
+|             for S in [0:11)
+|               for M in [0:8) (Spatial-X)
 
-BANK [ Weights:3 (3) Outputs:33 (33) ] 
+BANK [ Weights:9 (9) Outputs:33 (33) ] 
 --------------------------------------
-|                   for Q in [0:11)
-|                     for M in [0:3)
+|                 for Q in [0:11)
+|                   for M in [0:3)
+|                     for C in [0:3)
 

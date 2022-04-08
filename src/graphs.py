@@ -1,6 +1,4 @@
-import os
 import re
-import matplotlib
 import matplotlib.pyplot as plt
 
 

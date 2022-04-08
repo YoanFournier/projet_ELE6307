@@ -23,8 +23,8 @@ mapping:
       []
   - target: BANK
     type: temporal
-    factors: C3 M2 R1 S3 N1 P4 Q2
-    permutation: CMSPQRN
+    factors: C3 M8 R3 S1 N1 P2 Q1
+    permutation: CMRPSNQ
   - target: L1_CACHE
     type: spatial
     factors: C1 M2 R1 S1 N1 P4 Q2
@@ -32,9 +32,9 @@ mapping:
     split: 3
   - target: L1_CACHE
     type: temporal
-    factors: C1 M4 R3 S1 N1 P2 Q4
-    permutation: RMQPCSN
+    factors: C1 M2 R1 S3 N1 P4 Q1
+    permutation: SMPCRNQ
   - target: OFFCHIP_MEM
     type: temporal
-    factors: C1 M4 R1 S1 N1 P7 Q14
-    permutation: MQPCRSN
+    factors: C1 M2 R1 S1 N1 P7 Q112
+    permutation: QMPCRSN

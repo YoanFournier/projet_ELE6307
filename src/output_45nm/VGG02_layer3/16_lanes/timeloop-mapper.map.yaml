@@ -34,8 +34,8 @@ mapping:
   - target: L1_CACHE
     type: temporal
     factors: C32 M1 R3 S1 N1 P1 Q14
-    permutation: CRQMSNP
+    permutation: RCQMSNP
   - target: OFFCHIP_MEM
     type: temporal
     factors: C1 M8 R1 S1 N1 P14 Q4
-    permutation: MPQCRSN
+    permutation: MQPCRSN

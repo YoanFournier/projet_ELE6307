@@ -25,13 +25,13 @@ mapping:
       []
   - target: BANK
     type: temporal
-    factors: C2 M4 R3 S1 N1 P1 Q4
-    permutation: CMRQSNP
+    factors: C4 M1 R1 S3 N1 P1 Q7
+    permutation: CSQMRNP
   - target: L1_CACHE
     type: temporal
-    factors: C16 M8 R1 S1 N1 P7 Q28
-    permutation: PMQCRSN
+    factors: C16 M64 R3 S1 N1 P7 Q2
+    permutation: MPQRCSN
   - target: OFFCHIP_MEM
     type: temporal
-    factors: C2 M2 R1 S3 N1 P32 Q2
-    permutation: SCPMQRN
+    factors: C1 M1 R1 S1 N1 P32 Q16
+    permutation: PQCMRSN

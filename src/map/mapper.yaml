@@ -5,6 +5,6 @@ mapper:
   num-threads: 8
   timeout: 5000
   search-size: 500000
-  victory-condition: 1000
+  victory-condition: 10000
   algorithm: random-pruned
   max-permutations-per-if-visit: 16

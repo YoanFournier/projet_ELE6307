@@ -28,9 +28,9 @@ mapping:
     permutation: MRPQCSN
   - target: L1_CACHE
     type: temporal
-    factors: C3 M2 R1 S3 N1 P16 Q4
-    permutation: SCMPQRN
+    factors: C3 M8 R1 S3 N1 P16 Q8
+    permutation: SCQMPRN
   - target: OFFCHIP_MEM
     type: temporal
-    factors: C1 M16 R1 S1 N1 P2 Q28
-    permutation: MPQCRSN
+    factors: C1 M4 R1 S1 N1 P2 Q14
+    permutation: MQPCRSN

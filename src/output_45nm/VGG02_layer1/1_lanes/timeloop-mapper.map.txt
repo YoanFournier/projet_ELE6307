@@ -1,15 +1,15 @@
 
 OFFCHIP_MEM [ Weights:1728 (1728) Inputs:153228 (153228) Outputs:3211264 (3211264) ] 
 ------------------------------------------------------------------------------------
-| for Q in [0:28)
-|   for P in [0:2)
-|     for M in [0:16)
+| for P in [0:2)
+|   for Q in [0:14)
+|     for M in [0:4)
 
-L1_CACHE [ Weights:108 (108) Inputs:3420 (3420) ] 
+L1_CACHE [ Weights:432 (432) Inputs:6156 (6156) ] 
 -------------------------------------------------
-|       for Q in [0:4)
-|         for P in [0:16)
-|           for M in [0:2)
+|       for P in [0:16)
+|         for M in [0:8)
+|           for Q in [0:8)
 |             for C in [0:3)
 |               for S in [0:3)
 
