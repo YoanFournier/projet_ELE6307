@@ -21,7 +21,9 @@ def results_parser(path='src/output/timeloop-mapper.stats.txt'):
         tot_util = float(re.findall("[0-9]+\.[0-9]+", tot_util)[0])
     return tot_energy, tot_cycles, tot_area, tot_util
 
-problem_list = ["AlexNet_layer1", "AlexNet_layer2","AlexNet_layer3", "VGG02_layer1", "VGG02_layer2", "VGG02_layer3"]
+alex_list = ["AlexNet_layer1", "AlexNet_layer2","AlexNet_layer3"]
+vgg_list = ["VGG02_layer1", "VGG02_layer2", "VGG02_layer3"]
+problem_list = alex_list+vgg_list
 num_lanes_list = [1,2,4,8,16]
 
 tot_energy = {prob:[None]*len(num_lanes_list) for prob in problem_list}
@@ -41,22 +43,48 @@ for prob in problem_list:
         tot_util[prob][i] = util
         tot_perf[prob][i] = util*cycles*num_lanes/(energy*10**3) # Conversion to GFLOP/J (*10^6/10^9 => 1/10^3)
 
-style_list = ["rx--", "ro--", "r^--", "bx-", "bo-", "b^-"]
+def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename):
+    fig, host = plt.subplots()
 
-# Energy
-for i, prob in enumerate(problem_list):
-    plt.plot(num_lanes_list, tot_energy[prob], style_list[i], linewidth=0.75, fillstyle='none')
-plt.legend(problem_list)
-plt.ylabel('Energy')
-plt.xlabel('Number of Lanes')
-plt.xscale('log',basex=2)
-plt.grid()
-plt.minorticks_on()
-plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-plt.savefig('tex_intermediate/fig/energy.png')
-plt.close()
+    par1 = host.twinx()
+    par2 = host.twinx()
+
+    host.set_xlabel(xlabel)
+    host.set_ylabel(ylabel)
+    par1.set_ylabel(ylabel)
+    par2.set_ylabel(ylabel)
+
+    p1, = host.plot(xlist, ylist[0], "rx-", label=legendlist[0],  linewidth=0.75, fillstyle='none')
+    p2, = par1.plot(xlist, ylist[1], "bo-", label=legendlist[1],  linewidth=0.75, fillstyle='none')
+    p3, = par2.plot(xlist, ylist[2], "g^-", label=legendlist[2],  linewidth=0.75, fillstyle='none')
+
+    lns = [p1, p2, p3]
+    host.legend(handles=lns, loc='best')
+    par2.spines['right'].set_position(('outward', 60))
+
+    host.yaxis.label.set_color(p1.get_color())
+    par1.yaxis.label.set_color(p2.get_color())
+    par2.yaxis.label.set_color(p3.get_color())
+    
+    plt.grid()
+    plt.minorticks_on()
+    plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
+
+    fig.tight_layout()
+
+    plt.savefig(savename)
+    plt.close()    
+
+# Energy VGG
+energy_list = [tot_energy['VGG02_layer1'],tot_energy['VGG02_layer2'],tot_energy['VGG02_layer3']]
+plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", vgg_list, 'tex_intermediate/fig/VGG_energy.png')
+
+# Energy Alex
+energy_list = [tot_energy['AlexNet_layer1'],tot_energy['AlexNet_layer2'],tot_energy['AlexNet_layer3']]
+plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", alex_list, 'tex_intermediate/fig/Alex_energy.png')
 
 # Cycles
+style_list = ["rx--", "ro--", "r^--", "bx-", "bo-", "b^-"]
 for i, prob in enumerate(problem_list):
     plt.plot(num_lanes_list, tot_cycles[prob], style_list[i], linewidth=0.75, fillstyle='none')
 plt.legend(problem_list)
