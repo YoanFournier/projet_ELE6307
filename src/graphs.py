@@ -21,28 +21,6 @@ def results_parser(path='src/output/timeloop-mapper.stats.txt'):
         tot_util = float(re.findall("[0-9]+\.[0-9]+", tot_util)[0])
     return tot_energy, tot_cycles, tot_area, tot_util
 
-alex_list = ["AlexNet_layer1", "AlexNet_layer2","AlexNet_layer3"]
-vgg_list = ["VGG02_layer1", "VGG02_layer2", "VGG02_layer3"]
-problem_list = alex_list+vgg_list
-num_lanes_list = [1,2,4,8,16]
-
-tot_energy = {prob:[None]*len(num_lanes_list) for prob in problem_list}
-tot_cycles = {prob:[None]*len(num_lanes_list) for prob in problem_list}
-tot_area = {prob:[None]*len(num_lanes_list) for prob in problem_list} 
-tot_util = {prob:[None]*len(num_lanes_list) for prob in problem_list}
-tot_perf = {prob:[None]*len(num_lanes_list) for prob in problem_list}
-
-
-for prob in problem_list:
-    for i, num_lanes in enumerate(num_lanes_list):
-        path = f"src/output_45nm/{prob}/{num_lanes}_lanes/timeloop-mapper.stats.txt"
-        energy, cycles, area, util = results_parser(path)
-        tot_energy[prob][i] = energy # uJ
-        tot_cycles[prob][i] = cycles
-        tot_area[prob][i] = area
-        tot_util[prob][i] = util
-        tot_perf[prob][i] = util*cycles*num_lanes/(energy*10**3) # Conversion to GFLOP/J (*10^6/10^9 => 1/10^3)
-
 def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename):
     fig, host = plt.subplots()
 
@@ -75,6 +53,29 @@ def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename):
     plt.savefig(savename)
     plt.close()    
 
+alex_list = ["AlexNet_layer1", "AlexNet_layer2","AlexNet_layer3"]
+vgg_list = ["VGG02_layer1", "VGG02_layer2", "VGG02_layer3"]
+problem_list = alex_list+vgg_list
+num_lanes_list = [1,2,4,8,16]
+
+tot_energy = {prob:[None]*len(num_lanes_list) for prob in problem_list}
+tot_cycles = {prob:[None]*len(num_lanes_list) for prob in problem_list}
+tot_area = {prob:[None]*len(num_lanes_list) for prob in problem_list} 
+tot_util = {prob:[None]*len(num_lanes_list) for prob in problem_list}
+tot_perf = {prob:[None]*len(num_lanes_list) for prob in problem_list}
+
+
+for prob in problem_list:
+    for i, num_lanes in enumerate(num_lanes_list):
+        path = f"src/output_45nm/{prob}/{num_lanes}_lanes/timeloop-mapper.stats.txt"
+        energy, cycles, area, util = results_parser(path)
+        tot_energy[prob][i] = energy # uJ
+        tot_cycles[prob][i] = cycles
+        tot_area[prob][i] = area
+        tot_util[prob][i] = util
+        tot_perf[prob][i] = util*cycles*num_lanes/(energy*10**3) # Conversion to GFLOP/J (*10^6/10^9 => 1/10^3)
+
+
 # Energy VGG
 energy_list = [tot_energy['VGG02_layer1'],tot_energy['VGG02_layer2'],tot_energy['VGG02_layer3']]
 plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", vgg_list, 'tex_intermediate/fig/VGG_energy.png')
@@ -82,6 +83,14 @@ plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", vgg_l
 # Energy Alex
 energy_list = [tot_energy['AlexNet_layer1'],tot_energy['AlexNet_layer2'],tot_energy['AlexNet_layer3']]
 plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", alex_list, 'tex_intermediate/fig/Alex_energy.png')
+
+# Perf VGG
+perf_list = [tot_perf['VGG02_layer1'],tot_perf['VGG02_layer2'],tot_perf['VGG02_layer3']]
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", vgg_list, 'tex_intermediate/fig/VGG_performance.png')
+
+# Perf Alex
+perf_list = [tot_perf['AlexNet_layer1'],tot_perf['AlexNet_layer2'],tot_perf['AlexNet_layer3']]
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", alex_list, 'tex_intermediate/fig/Alex_performance.png')
 
 # Cycles
 style_list = ["rx--", "ro--", "r^--", "bx-", "bo-", "b^-"]
@@ -124,6 +133,7 @@ plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25
 plt.savefig('tex_intermediate/fig/utilization.png')
 plt.close()
 
+exit()
 # Performance
 for i, prob in enumerate(problem_list):
     plt.plot(num_lanes_list, tot_perf[prob], style_list[i], linewidth=0.75, fillstyle='none')
