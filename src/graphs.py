@@ -21,7 +21,7 @@ def results_parser(path='src/output/timeloop-mapper.stats.txt'):
         tot_util = float(re.findall("[0-9]+\.[0-9]+", tot_util)[0])
     return tot_energy, tot_cycles, tot_area, tot_util
 
-def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename):
+def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename, xlog=False, ylog=False):
     fig, host = plt.subplots()
 
     par1 = host.twinx()
@@ -37,18 +37,27 @@ def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename):
     p3, = par2.plot(xlist, ylist[2], "g^-", label=legendlist[2],  linewidth=0.75, fillstyle='none')
 
     lns = [p1, p2, p3]
-    host.legend(handles=lns, loc='best')
     par2.spines['right'].set_position(('outward', 60))
 
     host.yaxis.label.set_color(p1.get_color())
     par1.yaxis.label.set_color(p2.get_color())
     par2.yaxis.label.set_color(p3.get_color())
+
+    if ylog:
+        host.set_yscale('log', base=2)
+        par1.set_yscale('log', base=2)
+        par2.set_yscale('log', base=2)
+
+    if xlog:
+        plt.xscale('log', base=2)
     
     plt.grid()
     plt.minorticks_on()
     plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
 
     fig.tight_layout()
+
+    par2.legend(handles=lns, loc='best', framealpha=1)
 
     plt.savefig(savename)
     plt.close()    
@@ -78,71 +87,46 @@ for prob in problem_list:
 
 # Energy VGG
 energy_list = [tot_energy['VGG02_layer1'],tot_energy['VGG02_layer2'],tot_energy['VGG02_layer3']]
-plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", vgg_list, 'tex_intermediate/fig/VGG_energy.png')
+plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", vgg_list, 'tex_final/fig/VGG_energy.png')
 
 # Energy Alex
 energy_list = [tot_energy['AlexNet_layer1'],tot_energy['AlexNet_layer2'],tot_energy['AlexNet_layer3']]
-plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", alex_list, 'tex_intermediate/fig/Alex_energy.png')
+plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", alex_list, 'tex_final/fig/Alex_energy.png')
 
 # Perf VGG
 perf_list = [tot_perf['VGG02_layer1'],tot_perf['VGG02_layer2'],tot_perf['VGG02_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", vgg_list, 'tex_intermediate/fig/VGG_performance.png')
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", vgg_list, 'tex_final/fig/VGG_performance.png')
 
 # Perf Alex
 perf_list = [tot_perf['AlexNet_layer1'],tot_perf['AlexNet_layer2'],tot_perf['AlexNet_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", alex_list, 'tex_intermediate/fig/Alex_performance.png')
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", alex_list, 'tex_final/fig/Alex_performance.png')
 
-# Cycles
+# Cycles VGG
+perf_list = [tot_cycles['VGG02_layer1'],tot_cycles['VGG02_layer2'],tot_cycles['VGG02_layer3']]
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Cycles", vgg_list, 'tex_final/fig/VGG_cycles.png', True, True)
+
+# Cycles Alex
+perf_list = [tot_cycles['AlexNet_layer1'],tot_cycles['AlexNet_layer2'],tot_cycles['AlexNet_layer3']]
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Cycles", alex_list, 'tex_final/fig/Alex_cycles.png', True, True)
+
+# Utilization VGG
+perf_list = [tot_util['VGG02_layer1'],tot_util['VGG02_layer2'],tot_util['VGG02_layer3']]
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Utilization", vgg_list, 'tex_final/fig/VGG_utilization.png', True)
+
+# Utilization Alex
+perf_list = [tot_util['AlexNet_layer1'],tot_util['AlexNet_layer2'],tot_util['AlexNet_layer3']]
+plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Utilization", alex_list, 'tex_final/fig/Alex_utilization.png', True)
+
 style_list = ["rx--", "ro--", "r^--", "bx-", "bo-", "b^-"]
-for i, prob in enumerate(problem_list):
-    plt.plot(num_lanes_list, tot_cycles[prob], style_list[i], linewidth=0.75, fillstyle='none')
-plt.legend(problem_list)
-plt.ylabel('Cycles')
-plt.xlabel('Number of Lanes')
-plt.xscale('log',basex=2)
-plt.yscale('log',basey=2)
-plt.grid()
-plt.minorticks_on()
-plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-plt.savefig('tex_intermediate/fig/cycles.png')
-plt.close()
 
 # Area
-for i, prob in enumerate(problem_list):
-    plt.plot(num_lanes_list, tot_area[prob], style_list[i], linewidth=0.75, fillstyle='none')
-plt.legend(problem_list)
+prob = problem_list[0]
+plt.plot(num_lanes_list, tot_area[prob], style_list[i], linewidth=0.75, fillstyle='none')
 plt.ylabel('Area')
 plt.xlabel('Number of Lanes')
-plt.xscale('log',basex=2)
+plt.xscale('log',base=2)
 plt.grid()
 plt.minorticks_on()
 plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-plt.savefig('tex_intermediate/fig/area.png')
-plt.close()
-
-# Utilization
-for i, prob in enumerate(problem_list):
-    plt.plot(num_lanes_list, tot_util[prob], style_list[i], linewidth=0.75, fillstyle='none')
-plt.legend(problem_list)
-plt.ylabel('Utilization %')
-plt.xlabel('Number of Lanes')
-plt.xscale('log',basex=2)
-plt.grid()
-plt.minorticks_on()
-plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-plt.savefig('tex_intermediate/fig/utilization.png')
-plt.close()
-
-exit()
-# Performance
-for i, prob in enumerate(problem_list):
-    plt.plot(num_lanes_list, tot_perf[prob], style_list[i], linewidth=0.75, fillstyle='none')
-plt.legend(problem_list)
-plt.ylabel('Performance [GFLOP/J]')
-plt.xlabel('Number of Lanes')
-plt.xscale('log',basex=2)
-plt.grid()
-plt.minorticks_on()
-plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
-plt.savefig('tex_intermediate/fig/performance.png')
+plt.savefig('tex_final/fig/area.png')
 plt.close()

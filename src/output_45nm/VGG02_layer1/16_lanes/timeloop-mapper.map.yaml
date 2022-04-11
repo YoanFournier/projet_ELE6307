@@ -2,10 +2,11 @@ mapping:
   - target: BANK
     type: datatype
     keep:
+      - Weights
       - Inputs
       - Outputs
     bypass:
-      - Weights
+      []
   - target: L1_CACHE
     type: datatype
     keep:
@@ -23,18 +24,18 @@ mapping:
       []
   - target: BANK
     type: temporal
-    factors: C3 M8 R3 S1 N1 P2 Q1
-    permutation: CMRPSNQ
+    factors: C1 M2 R3 S3 N1 P1 Q8
+    permutation: MRSQCNP
   - target: L1_CACHE
     type: spatial
-    factors: C1 M2 R1 S1 N1 P4 Q2
-    permutation: MPQCRSN
-    split: 3
+    factors: C3 M1 R1 S1 N1 P1 Q4
+    permutation: CQMRSNP
+    split: 2
   - target: L1_CACHE
     type: temporal
-    factors: C1 M2 R1 S3 N1 P4 Q1
-    permutation: SMPCRNQ
+    factors: C1 M32 R1 S1 N1 P7 Q7
+    permutation: MPQCRSN
   - target: OFFCHIP_MEM
     type: temporal
-    factors: C1 M2 R1 S1 N1 P7 Q112
-    permutation: QMPCRSN
+    factors: C1 M1 R1 S1 N1 P32 Q1
+    permutation: PCMRSNQ

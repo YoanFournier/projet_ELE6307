@@ -1,10 +1,9 @@
 mapper:
-  optimization-metrics:  [ delay, energy ]
+  optimization-metrics:  [ energy ]
   #live-status: True
   #diagnostics: True
   num-threads: 8
-  timeout: 5000
-  search-size: 500000
-  victory-condition: 10000
+  timeout: 50000
+  victory-condition: 50000
   algorithm: random-pruned
   max-permutations-per-if-visit: 16
