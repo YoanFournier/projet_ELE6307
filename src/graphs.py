@@ -62,6 +62,37 @@ def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename, xlog=Fa
     plt.savefig(savename)
     plt.close()    
 
+def plot_single_axis(xlist, ylist, xlabel, ylabel, legendlist, savename, xlog=False, ylog=False):
+    fig, host = plt.subplots()
+
+    host.set_xlabel(xlabel)
+    host.set_ylabel(ylabel)
+
+    p1, = host.plot(xlist, ylist[0], "rx-", label=legendlist[0],  linewidth=0.75, fillstyle='none')
+    p2, = host.plot(xlist, ylist[1], "bo-", label=legendlist[1],  linewidth=0.75, fillstyle='none')
+    p3, = host.plot(xlist, ylist[2], "g^-", label=legendlist[2],  linewidth=0.75, fillstyle='none')
+
+    lns = [p1, p2, p3]
+
+    host.yaxis.label.set_color(p1.get_color())
+
+    if ylog:
+        host.set_yscale('log', base=2)
+
+    if xlog:
+        plt.xscale('log', base=2)
+    
+    plt.grid()
+    plt.minorticks_on()
+    plt.grid(visible=True, which='minor', color='#999999', linestyle='-', alpha=0.25)
+
+    fig.tight_layout()
+
+    host.legend(handles=lns, loc='best', framealpha=1)
+
+    plt.savefig(savename)
+    plt.close()
+
 alex_list = ["AlexNet_layer1", "AlexNet_layer2","AlexNet_layer3"]
 vgg_list = ["VGG02_layer1", "VGG02_layer2", "VGG02_layer3"]
 problem_list = alex_list+vgg_list
@@ -95,27 +126,27 @@ plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", alex_
 
 # Perf VGG
 perf_list = [tot_perf['VGG02_layer1'],tot_perf['VGG02_layer2'],tot_perf['VGG02_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", vgg_list, 'tex_final/fig/VGG_performance.png')
+plot_single_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", vgg_list, 'tex_final/fig/VGG_performance.png')
 
 # Perf Alex
 perf_list = [tot_perf['AlexNet_layer1'],tot_perf['AlexNet_layer2'],tot_perf['AlexNet_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", alex_list, 'tex_final/fig/Alex_performance.png')
+plot_single_axis(num_lanes_list, perf_list, "Number of Lanes", "Performance [GFLOP/J]", alex_list, 'tex_final/fig/Alex_performance.png')
 
 # Cycles VGG
 perf_list = [tot_cycles['VGG02_layer1'],tot_cycles['VGG02_layer2'],tot_cycles['VGG02_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Cycles", vgg_list, 'tex_final/fig/VGG_cycles.png', True, True)
+plot_single_axis(num_lanes_list, perf_list, "Number of Lanes", "Cycles", vgg_list, 'tex_final/fig/VGG_cycles.png', True, True)
 
 # Cycles Alex
 perf_list = [tot_cycles['AlexNet_layer1'],tot_cycles['AlexNet_layer2'],tot_cycles['AlexNet_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Cycles", alex_list, 'tex_final/fig/Alex_cycles.png', True, True)
+plot_single_axis(num_lanes_list, perf_list, "Number of Lanes", "Cycles", alex_list, 'tex_final/fig/Alex_cycles.png', True, True)
 
 # Utilization VGG
 perf_list = [tot_util['VGG02_layer1'],tot_util['VGG02_layer2'],tot_util['VGG02_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Utilization", vgg_list, 'tex_final/fig/VGG_utilization.png', True)
+plot_single_axis(num_lanes_list, perf_list, "Number of Lanes", "Utilization", vgg_list, 'tex_final/fig/VGG_utilization.png', True)
 
 # Utilization Alex
 perf_list = [tot_util['AlexNet_layer1'],tot_util['AlexNet_layer2'],tot_util['AlexNet_layer3']]
-plot_triple_axis(num_lanes_list, perf_list, "Number of Lanes", "Utilization", alex_list, 'tex_final/fig/Alex_utilization.png', True)
+plot_single_axis(num_lanes_list, perf_list, "Number of Lanes", "Utilization", alex_list, 'tex_final/fig/Alex_utilization.png', True)
 
 style_list = ["rx--", "ro--", "r^--", "bx-", "bo-", "b^-"]
 
