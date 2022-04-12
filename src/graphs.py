@@ -57,7 +57,7 @@ def plot_triple_axis(xlist, ylist, xlabel, ylabel, legendlist, savename, xlog=Fa
 
     fig.tight_layout()
 
-    par2.legend(handles=lns, loc='best', framealpha=1)
+    par2.legend(handles=lns, loc='best', framealpha=0.5)
 
     plt.savefig(savename)
     plt.close()    
