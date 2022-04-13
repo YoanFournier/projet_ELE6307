@@ -25,8 +25,8 @@ mapping:
       []
   - target: BANK
     type: temporal
-    factors: C4 M1 R3 S1 N1 P8 Q1
-    permutation: CRPMSNQ
+    factors: C4 M4 R3 S1 N1 P1 Q1
+    permutation: CMRSNPQ
   - target: L1_CACHE
     type: spatial
     factors: C1 M2 R1 S1 N1 P1 Q1
@@ -34,9 +34,9 @@ mapping:
     split: 1
   - target: L1_CACHE
     type: temporal
-    factors: C16 M4 R1 S3 N1 P1 Q56
-    permutation: SQCMRNP
+    factors: C16 M8 R1 S3 N1 P8 Q16
+    permutation: PQSMCRN
   - target: OFFCHIP_MEM
     type: temporal
-    factors: C1 M16 R1 S1 N1 P14 Q2
-    permutation: MPQCRSN
+    factors: C1 M2 R1 S1 N1 P14 Q7
+    permutation: PQMCRSN

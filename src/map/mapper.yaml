@@ -3,7 +3,7 @@ mapper:
   #live-status: True
   #diagnostics: True
   num-threads: 8
-  timeout: 50000
-  victory-condition: 50000
+  timeout: 100000
+  victory-condition: 100000
   algorithm: random-pruned
   max-permutations-per-if-visit: 16

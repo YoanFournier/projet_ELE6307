@@ -118,11 +118,11 @@ for prob in problem_list:
 
 # Energy VGG
 energy_list = [tot_energy['VGG02_layer1'],tot_energy['VGG02_layer2'],tot_energy['VGG02_layer3']]
-plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", vgg_list, 'tex_final/fig/VGG_energy.png')
+plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy [uJ]", vgg_list, 'tex_final/fig/VGG_energy.png')
 
 # Energy Alex
 energy_list = [tot_energy['AlexNet_layer1'],tot_energy['AlexNet_layer2'],tot_energy['AlexNet_layer3']]
-plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy", alex_list, 'tex_final/fig/Alex_energy.png')
+plot_triple_axis(num_lanes_list, energy_list, "Number of Lanes", "Energy [uJ]", alex_list, 'tex_final/fig/Alex_energy.png')
 
 # Perf VGG
 perf_list = [tot_perf['VGG02_layer1'],tot_perf['VGG02_layer2'],tot_perf['VGG02_layer3']]

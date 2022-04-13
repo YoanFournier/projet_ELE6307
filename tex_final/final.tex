@@ -1,4 +1,4 @@
-\documentclass[11pt,letterpaper]{article}
+\documentclass[10pt,letterpaper]{article}
 
 %\usepackage[latin1]{inputenc} 
 \usepackage[utf8]{inputenc}
@@ -21,6 +21,8 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \usepackage{siunitx}
+\usepackage{rotating}
+\usepackage{adjustbox}
 \addto\captionsfrench{\def\tablename{Tableau}}
 
 %-----------------------------------------------------------------%
@@ -106,6 +108,35 @@
 
 \newpage
 \normalsize
+
+\section*{Annexes}
+
+\begin{sidewaystable}
+    \footnotesize
+    \begin{tabular}{l|ccccc|ccccc|ccccc}
+    Problem                     & \multicolumn{5}{c|}{\textbf{AlexNet\_layer1}}                                           & \multicolumn{5}{c|}{\textbf{AlexNet\_layer2}}                                          & \multicolumn{5}{c}{\textbf{AlexNet\_layer3}}                                            \\
+    Parameters                  & \multicolumn{5}{c|}{\begin{tabular}[c]{@{}c@{}}M=96 K=11x11\\ C=3 I=55x55\end{tabular}} & \multicolumn{5}{c|}{\begin{tabular}[c]{@{}c@{}}M=256 K=5x5\\ C=96 I=27x27\end{tabular}} & \multicolumn{5}{c}{\begin{tabular}[c]{@{}c@{}}M=384 K=3x3\\ C=256 I=13x13\end{tabular}} \\
+    n                           & 1                & 2                & 4               & 8              & 16             & 1                & 2               & 4               & 8              & 16             & 1                & 2                & 4               & 8              & 16             \\ \hline
+    Utilization                 & 1                & 1                & 0.75            & 0.75           & 0.94           & 1                & 1               & 0.75            & 1              & 0.62           & 1                & 1                & 0.75            & 1              & 1              \\
+    Cycles {[}Millions{]}       & 105.4            & 52.7             & 35.1            & 17.6           & 7.3            & 447.9            & 223.9           & 149.3           & 56.0           & 44.8           & 149.5            & 74.8             & 49.8            & 18.7           & 9.3            \\
+    Energy {[}mJ{]}             & 3.82             & 3.80             & 3.77            & 3.77           & 3.76           & 16.03            & 15.99           & 15.98           & 15.95          & 15.92          & 5.40             & 5.39             & 5.36            & 5.34           & 5.35           \\
+    \textbf{Perf {[}GFLOP/J{]}} & 27.59            & 27.73            & 27.91           & 28.00          & 28.12          & 27.94            & 28.01           & 28.02           & 28.08          & 27.90          & 27.69            & 27.73            & 27.86           & 28.00          & 27.92         
+    \end{tabular}
+\end{sidewaystable}
+
+\begin{sidewaystable}
+    \footnotesize
+    \begin{tabular}{l|ccccc|ccccc|ccccc}
+    Problem                     & \multicolumn{5}{c|}{\textbf{VGG02\_layer1}}                                             & \multicolumn{5}{c|}{\textbf{VGG02\_layer2}}                                              & \multicolumn{5}{c}{\textbf{VGG02\_layer3}}                                               \\
+    Parameters                  & \multicolumn{5}{c|}{\begin{tabular}[c]{@{}c@{}}M=64 K=3x3\\ C=3 I=224x224\end{tabular}} & \multicolumn{5}{c|}{\begin{tabular}[c]{@{}c@{}}M=64 K=3x3\\ C=64 I=224x224\end{tabular}} & \multicolumn{5}{c}{\begin{tabular}[c]{@{}c@{}}M=128 K=3x3\\ C=64 I=112x112\end{tabular}} \\
+    n                           & 1                & 2               & 4               & 8               & 16             & 1                & 2               & 4               & 8               & 16              & 1                & 2               & 4               & 8               & 16              \\ \hline
+    Utilization                 & 1                & 1               & 0.75            & 0.75            & 0.75           & 1                & 1               & 1               & 1               & 1               & 1                & 1               & 1               & 0.5             & 1               \\
+    Cycles {[}Millions{]}       & 86.7             & 43.4            & 28.9            & 14.5            & 7.2            & 1850             & 924.8           & 462.4           & 231.2           & 115.6           & 925              & 462             & 231             & 231             & 57.8            \\
+    Energy {[}mJ{]}             & 3.31             & 3.30            & 3.27            & 3.27            & 3.26           & 66.9             & 66.7            & 65.9            & 65.9            & 65.7            & 33.2             & 33.2            & 32.9            & 32.9            & 32.9            \\
+    \textbf{Perf {[}GFLOP/J{]}} & 26.18            & 26.28           & 26.48           & 26.55           & 26.59          & 27.65            & 27.72           & 28.08           & 28.07           & 28.15           & 27.82            & 27.84           & 28.13           & 28.07           & 28.13          
+    \end{tabular}
+\end{sidewaystable}
+
 
 \end{document} 
 %-----------------------------------------------------------------%
