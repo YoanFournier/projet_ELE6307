@@ -1,23 +1,23 @@
 architecture:
   version: 0.3
   local:
-  - name: ARA.CHIP.LANE.BANK[0..3]
+  - name: ARA.CHIP.LANE.BANK[0..15]
     class: regfile
     attributes:
       block-size: 8
       depth: 8
       latency: 5ns
       n_ports: 2
-      technology: 22nm
+      technology: 45nm
       width: 64
       word-bits: 8
-  - name: ARA.CHIP.LANE.MACC[0..3]
+  - name: ARA.CHIP.LANE.MACC[0..15]
     class: intmac
     attributes:
       datawidth: 64
       latency: 5ns
       num_pipeline_stages: 2
-      technology: 22nm
+      technology: 45nm
   - name: ARA.CHIP.L1_CACHE
     class: SRAM
     attributes:
@@ -28,7 +28,7 @@ architecture:
       n_rd_ports: 0
       n_rdwr_ports: 1
       n_wr_ports: 0
-      technology: 22nm
+      technology: 45nm
       width: 64
       word-bits: 8
   - name: ARA.OFFCHIP_MEM

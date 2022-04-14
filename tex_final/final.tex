@@ -109,6 +109,19 @@
 \newpage
 \normalsize
 
+\begin{table}[]
+    \begin{tabular}{l|cc}
+    Problem                     & \multicolumn{2}{c}{\textbf{AlexNet\_layer2}}                                           \\
+    Parameters                  & \multicolumn{2}{c}{\begin{tabular}[c]{@{}c@{}}M=256 K=5x5\\ C=96 I=27x27\end{tabular}} \\
+    n                           & \multicolumn{2}{c}{16}                                                                 \\
+    Mapper                      & \multicolumn{1}{c|}{Timeloop}                         & Custom                         \\ \hline
+    Utilization                 & 0.62                                                  & 1                              \\
+    Cycles {[}Millions{]}       & 44.8                                                  & 28.0                           \\
+    Energy {[}mJ{]}             & 15.92                                                 & 15.90                          \\
+    \textbf{Perf {[}GFLOP/J{]}} & 27.90                                                 & 28.18                         
+    \end{tabular}
+\end{table}
+
 \section*{Annexes}
 
 \begin{sidewaystable}
