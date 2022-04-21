@@ -195,17 +195,26 @@
     qui n'était pas correctement configuré. Ainsi, le compteur du \textit{victory-condition} ne s'incrémentait
     pas correctement.
 
-    Afin d'étudier la performance de l'architecture en fonction du nombre de \textit{Lanes}, les problèmes utilisés sont 
-    les trois premières couches convolutionnelles de VGG16 et les trois premières couches convolutionnelles d'AlexNet. 
-    Ces deux groupes de problèmes ont été choisis pour observer la variation de la taille du problème, du nombre de canaux, 
-    le nombre de filtres et la taille des \textit{kernels}. Avec VGG16, chaque couche convolutionnelle possède la même 
-    taille de \textit{kernel}, mais varie en canaux, filtres et taille. Pour AlexNet, nous avons trois différentes tailles de \textit{kernels}.
-    La figure \ref{fig:prob} illustre les dimensions des problèmes étudiés.
+    {\centering
+    \includegraphics[width=0.8\linewidth]{arch_visio.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Architecture de ARA sur Timeloop}
+    \label{fig:timeloop_arch}}
+    \bigskip
+
+    Afin d'étudier la performance de l'architecture en fonction du nombre de \textit{Lanes}, 
+    les problèmes utilisés sont les trois premières couches convolutionnelles de VGG16 et 
+    les trois premières couches convolutionnelles d'AlexNet. Ces deux groupes de problèmes 
+    ont été choisis pour observer la variation de la taille du problème, du nombre de canaux, 
+    le nombre de filtres et la taille des \textit{kernels}. Avec VGG16, chaque couche convolutionnelle 
+    possède la même taille de \textit{kernel}, mais varie en canaux, filtres et taille. Pour 
+    AlexNet, nous avons trois différentes tailles de \textit{kernels}. La figure \ref{fig:prob} 
+    illustre les dimensions des problèmes étudiés.
     
     \begin{figure}[H]
         \centering
-        %\includegraphics[width=\linewidth]{probs.png}
-        \caption{Problèmes étudiés}
+        \includegraphics[width=\linewidth]{probs.png}
+        \caption{Problèmes étudiés: VGG16 (gauche) et AlexNet (droite)}
         \label{fig:probs}
     \end{figure}
 
@@ -330,7 +339,7 @@
     En général, les résultats démontrent clairement l'avantage que peut apporter un processeur vectoriel. En effet,
     bien que la consommation et l'efficacité énergétique restent similaires pour les différents nombres de \textit{Lanes},
     il faut comprendre qu'augmenter le nombre de \textit{Lanes} réduit le nombre de cycles nécessaires afin d'effectuer 
-    un calcul. En effet, sil’on utilise 100 \% des ressources, l'utilisation de 16 \textit{Lanes} apporte un gain en performance
+    un calcul. En effet, si l’on utilise 100 \% des ressources, l'utilisation de 16 \textit{Lanes} apporte un gain en performance
     jusqu'à un facteur 16 par rapport à un processeur scalaire et ceci pour une efficacité énergétique identique, voire meilleure.
 
     {\centering
@@ -343,11 +352,30 @@
     \end{multicols}
 
 \section{Conclusion}
-    \begin{multicols}{2}
-    %TODO: Retour sur resultats. Plus de Lanes = meilleure perf pour mm energie.
-    %TODO: Retour sur l'atteinte des objectifs de la proposition
-    %TODO: Optim avec GFLOP/J directement + contraindre a faire mapping spatial sur C
-    %TODO: Modeliser SLDU + sequencer
+\begin{multicols}{2}
+
+    Nous visions à comparer l'efficacité d'un processeur vectoriel contre un processeur 
+    scalaire dans le cas de calculs utilisés dans les DNNs afin de démontrer l'avantage 
+    d'utiliser des processeurs vectoriels. Nous avons étudié la consommation totale, le 
+    nombre de cycles, l'aire et l'efficacité énergétique en variant le nombre de \textit{Lanes} 
+    dans notre architecture pour six problèmes différents. Nous avons pu démontrer 
+    qu'augmenter le nombre de \textit{Lanes} permet d'atteindre de meilleures performances 
+    en temps sans compromettre l'efficacité énergétique du processeur, voire permettre une 
+    efficacité légèrement meilleure. En effet, augmenter le nombre de \textit{Lanes} permet 
+    la parralélisation des calculs, permettant des gains linéaires dans le cas de données 
+    indépendantes. Cet effet est indépendant du problème, pour autant qu'un mapping adéquat 
+    est utilisé. La génération de ces mappings est cepandant complexe et nécessiterait une 
+    étude plus approfondie et une meilleure connaissance du problème et de l'architecture.
+    Nous pouvons donc affirmer avoir atteint nos objectifs initiaux.
+
+    Dans le futur, il serait important de modéliser le séquenceur et le SLDU d'ARA. Ces 
+    composantes exécutent un travail complexe qui ne peut pas être ignoré pour avoir un 
+    modèle complet du flot de données dans un processeur vectoriel. Modéliser ces unités 
+    pourrait révéler un coût caché venant avec l'augmentation du nombre de \textit{Lanes}.
+    Pour améliorer la recherche de mappings au travers de Timeloop, il serait pertinent 
+    de modifier le critère d'optimisation du mapper pour l'efficacité (GFLOP/J) ou de contraindre
+    davantage le mapper pour encourager un mapping spacial maximal sur les canaux. Ces 
+    modifications devraient être sommaires à réaliser puisque Timeloop est open source.
     
     \end{multicols}
 
