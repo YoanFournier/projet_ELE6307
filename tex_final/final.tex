@@ -125,7 +125,7 @@
     performer la même opération sur plusieurs données plutôt qu'une seule, ce qui permet 
     de plus facilement augmenter le parallélisme des calculs. 
     
-    Le présent rappot étudie l'efficacité énergétique d'un modèle simplifié du processeur
+    Le présent rapport étudie l'efficacité énergétique d'un modèle simplifié du processeur
     vectoriel ARA sur différents problèmes en utilisant le simulateur \textit{Timeloop-Accelergy}.
     \end{multicols}
 
@@ -135,13 +135,13 @@
     L'architecture sur laquelle notre modèle se base est sur celle du coprocesseur 
     vectoriel ARA \cite{ara_paper}. Ce coprocesseur est une extension vectorielle du processeur scalaire
     RISCV CVA6. Le fonctionnement d’ARA se base sur le concept de \textit{Lanes}. 
-    La figure \ref{fig:ara_arch} présente l'architecture d’ARA \cite{bougenot_2020}.
+    Les figures \ref{fig:top_arch} et \ref{fig:lane_arch} présentent l'architecture d’ARA \cite{bougenot_2020}.
     Le coprocesseur ARA possède un nombre d'allées, ou \textit{Lanes}, qui sont capables de traiter des
-    éléments vectoriels indépendament. Le routage des données vers ces \textit{Lanes} grandit évidemment en complexité
+    éléments vectoriels indépendamment. Le routage des données vers ces \textit{Lanes} grandit évidemment en complexité
     avec le nombre de \textit{Lanes}. Le \textit{Sequencer} s'occupe de lire les instructions à exécuter 
     et transmettre les informations correctes au \textit{Vector Load and Store Unit} (VLSU), 
     \textit{Slide Unit} (SLDU) ou aux \textit{Lanes}. Le VLSU est responsable de générer les bonnes
-    addresses, amenant les données séquentiellement vers et depuis les \textit{Lanes}. 
+    adresses, amenant les données séquentiellement vers et depuis les \textit{Lanes}. 
     Le SLDU exécute des opérations qui n'ont pas d'indépendance entre les \textit{Lanes}.
     Finalement, chaque \textit{Lane} a son propre \textit{sequencer} pour les instructions à exécuter
     sur son élément vectoriel. Le reste de la \textit{Lane} peut être considéré comme un PE, avec sa mémoire locale,
@@ -153,13 +153,13 @@
     permet ensuite de trouver automatiquement la correspondance idéale du problème sur l'architecture matérielle.
 
     {\centering
-    \includegraphics[width=0.8\linewidth]{ara_arch.png}
+    \includegraphics[width=0.75\linewidth]{lane_arch.png}
     \captionsetup{hypcap=false}
-    \captionof{figure}{Architecture de ARA}
-    \label{fig:ara_arch}}
+    \captionof{figure}{Arch. \textit{Lane}}
+    \label{fig:lane_arch}}
     \bigskip
 
-    L'architecture simplifiée de ARA, comme mentionnée dans la proposition du projet, peut se modéliser en termes de 
+    L'architecture simplifiée d'ARA, comme mentionnée dans la proposition du projet, peut se modéliser en termes de 
     \textit{Lanes}. Chaque \textit{Lanes} à sa plus simple expression consiste en une banque de 8 registres ainsi qu'une
     unité arithmétique capable d'effectuer des multiplications et des additions. Bien que sur ARA, l'unité d'addition 
     est séparée de l'unité de multiplication, les deux unités peuvent fonctionner durant le même cycle sur des données
@@ -170,19 +170,34 @@
     de performance étudiée dans le cadre de ce projet.
 
     {\centering
-    \includegraphics[width=0.8\linewidth]{arch_visio.png}
+    \includegraphics[width=0.8\linewidth]{ara_arch.png}
     \captionsetup{hypcap=false}
-    \captionof{figure}{Architecture de ARA sur Timeloop}
-    \label{fig:timeloop_arch}}
+    \captionof{figure}{Arch. globale}
+    \label{fig:top_arch}}
     \bigskip
 
     L'architecture utilisée est présentée à la figure \ref{fig:timeloop_arch}. On y observe une mémoire DRAM principale reliée à 
     la mémoire cache L1 de 64 KB. La cache L1 est reliée à un nombre paramétrable de \textit{Lanes}. 
     Chaque \textit{Lane} comporte sa banque de 8 registres et son unité de \textit{multiply-accumulate}.
 
+    Afin de trouver les meilleurs mappings, la commande \textit{timeloop-mapper} a été utilisée. 
+    L'optimisation du mapping se fait en utilisant comme seule métrique l'énergie. L'ensemble des résultats
+    ont étés obtenues en utilisant la technologie 45 nm fournie par Accelergy. Aussi, un problème sur le 
+    \textit{victory-condition} du mapping a été trouvé en utilisant \textit{timeloop-mapper}. Ainsi, le code
+    source de Timeloop a été modifié afin d'obtenir des résultats. Le problème est relié à un \textit{flag} 
+    qui n'était pas correctement configuré. Ainsi, le compteur du \textit{victory-condition} ne s'incrémentait
+    pas correctement.
+
+    {\centering
+    \includegraphics[width=0.8\linewidth]{arch_visio.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Architecture de ARA sur Timeloop}
+    \label{fig:timeloop_arch}}
+    \bigskip
+
     Afin d'étudier la performance de l'architecture en fonction du nombre de \textit{Lanes}, les problèmes utilisés sont 
-    les trois premières couches convoluitonnelles de VGG16 et les trois premières couches convolutionnelles d'AlexNet. 
-    Ces deux groupes de problèmes ont été choisi pour observer la variation de la taille du problème, du nombre de canaux, 
+    les trois premières couches convolutionnelles de VGG16 et les trois premières couches convolutionnelles d'AlexNet. 
+    Ces deux groupes de problèmes ont été choisis pour observer la variation de la taille du problème, du nombre de canaux, 
     le nombre de filtres et la taille des \textit{kernels}. Avec VGG16, chaque couche convolutionnelle possède la même 
     taille de \textit{kernel}, mais varie en canaux, filtres et taille. Pour AlexNet, nous avons trois différentes tailles de \textit{kernels}.
     La figure \ref{fig:prob} illustre les dimensions des problèmes étudiés.
@@ -194,17 +209,32 @@
         \label{fig:probs}
     \end{figure}
 
+    Afin de mesurer la performance énergétique, la métrique utilisée est le GFLOP/J. La 
+    formule utilisée pour calculer cette métrique est la suivante :
+    $$\text{GFLOP/J} = \frac{\%utilization \times \#cycles \times \#lanes}{E_{tot}}$$
+
+    L'ensemble des fichiers sources utilisés afin d'obtenir les résultats sont disponibles
+    sur le repo GitHub suivant : \url{https://github.com/YoanFournier/projet_ELE6307}.
+
     \end{multicols}
 
 \section{Résultats}
     \begin{multicols}{2}
-        
-    {\centering
-    \includegraphics[width=\linewidth]{area.png}
-    \captionsetup{hypcap=false}
-    \captionof{figure}{Aire de ARA en fonction du nombre de \textit{Lanes}}
-    \label{fig:area}}
-    \bigskip
+
+    Cette section présente les résultats d'aire, de cycles, d'énergie et de performance en fonction
+    du nombre de \textit{Lanes} pour les 3 premières couches de AlexNet et VGG16.
+
+    Tout d'abord, la figure \ref{fig:area} montre que l'aire du circuit augment de façon linéaire en fonction
+    du nombre de \textit{Lanes}. C'est un résultat attendu puisque chaque \textit{Lane} prend, à priori, la même surface.
+    Il reste important de comprendre que ce résultat est approximatif, en réalité, la complexité du P\&R risque d'augmenter
+    plus rapidement que de façon linéaire en fonction du nombre de \textit{Lanes}.
+
+    Les figures \ref{fig:cycles_alex} et \ref{fig:cycles_vgg} montrent la corrélation entre le nombre de cycles 
+    pour effectuer le calcul des couches convolutive en fonction du nombre de \textit{Lanes}. Bien que l'on pourrait
+    s'attendre à une réduction linéaire des cycles, on remarque que ce n'est pas tout à fait le cas. En effet, l'utilisation
+    des \textit{Lanes} n'est pas de 100\% pour tous les problèmes comme le démontre la rangée \textit{Utilization} des 
+    tableaux \ref{tab:results_alex} et \ref{tab:results_vgg}. Le mapper de Timeloop n'arrive donc pas toujours à trouver un 
+    mapping utilisant plus de ressources qui optimise la consommation d'énergie.
 
     {\centering
     \includegraphics[width=\linewidth]{Alex_cycles.png}
@@ -214,39 +244,71 @@
     \bigskip
 
     {\centering
-    \includegraphics[width=\linewidth]{Alex_energy.png}
-    \captionsetup{hypcap=false}
-    \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
-    \label{fig:energy_alex}}
-    \bigskip
-
-    {\centering
-    \includegraphics[width=\linewidth]{Alex_performance.png}
-    \captionsetup{hypcap=false}
-    \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
-    \label{fig:perf_alex}}
-    \bigskip
-
-    {\centering
     \includegraphics[width=\linewidth]{VGG_cycles.png}
     \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
     \label{fig:cycles_vgg}}
     \bigskip
 
+    Les figures \ref{fig:energy_alex} et \ref{fig:energy_vgg} présentent l'énergie consommée pour les différents calculs
+    en fonction du nombre de \textit{Lanes}. On remarque une tendance à la baisse dans la consommation d'énergie plus le nombre 
+    de \textit{Lanes} est élevé. En effet, plus il y a de \textit{Lanes}, plus il y a de banques de registres disponibles. Ainsi,
+    la quantité de mémoire locale aux unités de calcul est plus élevée et il est moins nécessaire d'avoir accès aux hiérarchies de 
+    mémoires plus élevées comme la cache ou la DRAM. Ceci à pour effet de réduire la consommation d'énergie. Il reste que ces gains
+    énergétiques sont assez faibles et dans l'ensemble le meilleur gain d'énergie observé est de 1.52\% pour la couche 2 de VGG16 entre 
+    une \textit{Lane} et 16 \textit{Lanes}. 
+
+    {\centering
+    \includegraphics[width=\linewidth]{Alex_energy.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Énergie de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
+    \label{fig:energy_alex}}
+    \bigskip
+
     {\centering
     \includegraphics[width=\linewidth]{VGG_energy.png}
     \captionsetup{hypcap=false}
-    \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
+    \captionof{figure}{Énergie de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
     \label{fig:energy_vgg}}
+    \bigskip
+
+    Les figures \ref{fig:perf_alex} et \ref{fig:perf_vgg} mettent en avant l'efficacité énergétique en GFLOP/J en fonction du 
+    nombre de \textit{Lanes}. Le même constat que pour la consommation énergétique peut-être observée. Il y a une tendance à la
+    hausse de l'efficacité, mais les gains sont minimes et restent plutôt constants. On observe au maximum, un gain de 1.92\% entre une
+    \textit{Lane} et 16 \textit{Lanes} pour la couche 1 de AlexNet.
+
+    {\centering
+    \includegraphics[width=\linewidth]{Alex_performance.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Performance de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
+    \label{fig:perf_alex}}
     \bigskip
 
     {\centering
     \includegraphics[width=\linewidth]{VGG_performance.png}
     \captionsetup{hypcap=false}
-    \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
+    \captionof{figure}{Performance de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
     \label{fig:perf_vgg}}
     \bigskip
+
+    À la lumière de ces résultats, un aspect intéressant peut être soulevé. On remarque qu'en général, le mapper de 
+    Timeloop semble préférer effectuer le mapping spatial sur la composante C du problème, soit le nombre de canaux d'entrée.
+    La rangée \textit{Utilization} du tableau \ref{tab:results_alex} le démontre bien. On remarque une utilisation de 
+    75 \%, 75 \% et 94 \% pour 4, 8 et 16 \textit{Lanes} respectivement. Ceci correspond à une utilisation de 3, 6 et 15 \textit{Lanes}
+    qui sont tous des multiples de C=3. L'avantage de faire la distribution spatiale des données selon C est efficace énergétiquement
+    puisque l'ensemble des canaux sont indépendants. Chaque \textit{Lane} peut donc effectuer ses calculs de façon indépendante des autres
+    ce qui permet de limiter les transferts mémoire entre les \textit{Lanes} et à comme effet de minimiser la consommation énergétique.
+    Comme la plupart des couches internes d'un DNN possèdent un nombre pair de canaux d'entrée, il serait sans doute intéressant d'utiliser
+    un mapping spatial sur C dans la majorité des cas. Cependant, on remarque dans les tableaux \ref{tab:results_alex} et \ref{tab:results_vgg} 
+    que l'utilisation n'est pas de 100 \% pour les problèmes ayant un C pair.  
+
+    Afin de tester l'hypothèse qu'un mapping spatial sur C est généralement plus intéressant, un mapping custom a été 
+    conçu afin de le comparer au mapping effectué par Timeloop. Le problème utilisé est la couche 2 d'AlexNet sur 16 \textit{Lanes}.
+    Les deux mappings sont présentés au figures \ref{fig:map_timeloop_alex_L2} et \ref{fig:map_custom_alex_L2}.
+    La couche 2 d'AlexNet comporte 96 canaux, ce qui est divisible par le nombre de \textit{Lanes}. Cependant, le mapping 
+    de Timeloop n'utilise que 62 \% des \textit{Lanes} comme le montre le tableau \ref{tab:alex_L2_custom_map}. En utilisant 
+    un mapping custom faisant le mapping spatial sur C, on obtient une utilisation de 100 \% ainsi qu'un gain énergétique
+    et un gain en efficacité. 
 
     \begin{table}[H]
         \centering
@@ -260,26 +322,56 @@
         Energy {[}mJ{]}             & 15.92                                                 & 15.90                          \\
         \textbf{Perf {[}GFLOP/J{]}} & 27.90                                                 & 28.18                         
         \end{tabular}
-        \caption{Mapping Timeloop et mapping custom pour AlexNet L2}
-        \label{fig:alex_L2_custom_map}
+        \caption{Comparaison entre un mapping Timeloop et un mapping custom pour AlexNet L2}
+        \label{tab:alex_L2_custom_map}
     \end{table}    
+    \bigskip
+
+    En général, les résultats démontrent clairement l'avantage que peut apporter un processeur vectoriel. En effet,
+    bien que la consommation et l'efficacité énergétique restent similaires pour les différents nombres de \textit{Lanes},
+    il faut comprendre qu'augmenter le nombre de \textit{Lanes} réduit le nombre de cycles nécessaires afin d'effectuer 
+    un calcul. En effet, sil’on utilise 100 \% des ressources, l'utilisation de 16 \textit{Lanes} apporte un gain en performance
+    jusqu'à un facteur 16 par rapport à un processeur scalaire et ceci pour une efficacité énergétique identique, voire meilleure.
+
+    {\centering
+    \includegraphics[width=\linewidth]{area.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Aire de ARA en fonction du nombre de \textit{Lanes}}
+    \label{fig:area}}
     \bigskip
 
     \end{multicols}
 
 \section{Conclusion}
+    \begin{multicols}{2}
+    %TODO: Retour sur resultats. Plus de Lanes = meilleure perf pour mm energie.
+    %TODO: Optim avec GFLOP/J directement + contraindre a faire le spatial sur C
+    %TODO: Modeliser SLDU + sequencer
+    
+    \end{multicols}
 
 {\bibliography{refs}}
     \bibliographystyle{abbrv}
 
 \pagebreak
-    \begin{sidewaystable}[h]
-\vspace{-5.7cm}
-\centering
 \section*{Annexe}
-    \bigskip
-    \bigskip
-    \bigskip
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{map_timeloop_alex_L2.png}
+        \caption{Mapping Timeloop pour AlexNet L2}
+        \label{fig:map_timeloop_alex_L2}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\linewidth]{map_custom_alex_L2.png}
+        \caption{Mapping custom pour AlexNet L2}
+        \label{fig:map_custom_alex_L2}
+    \end{figure}
+
+    \begin{sidewaystable}[h]
+    \vspace{-6cm}
         \footnotesize
         \begin{tabular}{l|ccccc|ccccc|ccccc}
         Problem                     & \multicolumn{5}{c|}{\textbf{AlexNet\_layer1}}                                           & \multicolumn{5}{c|}{\textbf{AlexNet\_layer2}}                                          & \multicolumn{5}{c}{\textbf{AlexNet\_layer3}}                                            \\
@@ -291,7 +383,7 @@
         \textbf{Perf {[}GFLOP/J{]}} & 27.59            & 27.73            & 27.91           & 28.00          & 28.12          & 27.94            & 28.01           & 28.02           & 28.08          & 27.90          & 27.69            & 27.73            & 27.86           & 28.00          & 27.92         
         \end{tabular}
         \caption{Résultats pour le problème AlexNet}
-        \label{fig:results_alex}
+        \label{tab:results_alex}
         
     \bigskip
     \bigskip
@@ -309,7 +401,7 @@
         \textbf{Perf {[}GFLOP/J{]}} & 26.18            & 26.28           & 26.48           & 26.55           & 26.59          & 27.65            & 27.72           & 28.08           & 28.07           & 28.15           & 27.82            & 27.84           & 28.13           & 28.07           & 28.13          
         \end{tabular}
         \caption{Résultats pour le problème VGG16}
-        \label{fig:results_vgg}  
+        \label{tab:results_vgg}  
     \end{sidewaystable}
 
 \end{document} 
