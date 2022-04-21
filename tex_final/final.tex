@@ -178,10 +178,19 @@
     la mémoire cache L1 de 64 KB. La cache L1 est reliée à un nombre paramétrable de \textit{Lanes}. 
     Chaque \textit{Lane} comporte sa banque de 8 registres et son unité de \textit{multiply-accumulate}.
 
-    %TODO: Changer ce paragraphe
-    Afin d'étudier la performance de l'architecture en fonction du nombre de \textit{Lanes}, le problème utilisé est la première 
-    couche convolutionnelle du modèle VGG16. Cette couche comporte 64 filtres avec un \textit{kernel} de $3\times3$. L'entrée de la couche
-    est une image de dimension $224\times224\times3$.  
+    Afin d'étudier la performance de l'architecture en fonction du nombre de \textit{Lanes}, les problèmes utilisés sont 
+    les trois premières couches convoluitonnelles de VGG16 et les trois premières couches convolutionnelles d'AlexNet. 
+    Ces deux groupes de problèmes ont été choisi pour observer la variation de la taille du problème, du nombre de canaux, 
+    le nombre de filtres et la taille des \textit{kernels}. Avec VGG16, chaque couche convolutionnelle possède la même 
+    taille de \textit{kernel}, mais varie en canaux, filtres et taille. Pour AlexNet, nous avons trois différentes tailles de \textit{kernels}.
+    La figure \ref{fig:prob} illustre les dimensions des problèmes étudiés.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{probs.png}
+        \caption{Problèmes étudiés}
+        \label{fig:probs}
+    \end{figure}
 
     \end{multicols}
 
