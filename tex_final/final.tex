@@ -1,4 +1,4 @@
-\documentclass[10pt,letterpaper]{article}
+\documentclass[11pt,letterpaper]{article}
 
 %\usepackage[latin1]{inputenc} 
 \usepackage[utf8]{inputenc}
@@ -147,15 +147,22 @@
     sur son élément vectoriel. Le reste de la \textit{Lane} peut être considéré comme un PE, avec sa mémoire locale,
     un étage de conversion et un étage d'exécution.
 
+    {\centering
+    \includegraphics[width=\linewidth]{ara_arch.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Architecture globale}
+    \label{fig:top_arch}}
+    \bigskip
+
     Afin de modéliser l'efficacité énergétique du coprocesseur vectoriel ARA, le simulateur Timeloop a été 
     utilisé. Ce simulateur utilise une structure hiérarchique pour modéliser une architecture. Une structure
     détaillant le problème à résoudre par l'architecture est aussi spécifiée. La commande \textit{timeloop-mapper}
     permet ensuite de trouver automatiquement la correspondance idéale du problème sur l'architecture matérielle.
 
     {\centering
-    \includegraphics[width=0.75\linewidth]{lane_arch.png}
+    \includegraphics[width=\linewidth]{lane_arch.png}
     \captionsetup{hypcap=false}
-    \captionof{figure}{Arch. \textit{Lane}}
+    \captionof{figure}{Architecture \textit{Lane}}
     \label{fig:lane_arch}}
     \bigskip
 
@@ -170,10 +177,10 @@
     de performance étudiée dans le cadre de ce projet.
 
     {\centering
-    \includegraphics[width=0.8\linewidth]{ara_arch.png}
+    \includegraphics[width=0.8\linewidth]{arch_visio.png}
     \captionsetup{hypcap=false}
-    \captionof{figure}{Arch. globale}
-    \label{fig:top_arch}}
+    \captionof{figure}{Architecture de ARA sur Timeloop}
+    \label{fig:timeloop_arch}}
     \bigskip
 
     L'architecture utilisée est présentée à la figure \ref{fig:timeloop_arch}. On y observe une mémoire DRAM principale reliée à 
@@ -187,13 +194,6 @@
     source de Timeloop a été modifié afin d'obtenir des résultats. Le problème est relié à un \textit{flag} 
     qui n'était pas correctement configuré. Ainsi, le compteur du \textit{victory-condition} ne s'incrémentait
     pas correctement.
-
-    {\centering
-    \includegraphics[width=0.8\linewidth]{arch_visio.png}
-    \captionsetup{hypcap=false}
-    \captionof{figure}{Architecture de ARA sur Timeloop}
-    \label{fig:timeloop_arch}}
-    \bigskip
 
     Afin d'étudier la performance de l'architecture en fonction du nombre de \textit{Lanes}, les problèmes utilisés sont 
     les trois premières couches convolutionnelles de VGG16 et les trois premières couches convolutionnelles d'AlexNet. 
