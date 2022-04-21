@@ -195,20 +195,13 @@
     qui n'était pas correctement configuré. Ainsi, le compteur du \textit{victory-condition} ne s'incrémentait
     pas correctement.
 
-    {\centering
-    \includegraphics[width=0.8\linewidth]{arch_visio.png}
-    \captionsetup{hypcap=false}
-    \captionof{figure}{Architecture de ARA sur Timeloop}
-    \label{fig:timeloop_arch}}
-    \bigskip
-
     Afin d'étudier la performance de l'architecture en fonction du nombre de \textit{Lanes}, 
     les problèmes utilisés sont les trois premières couches convolutionnelles de VGG16 et 
     les trois premières couches convolutionnelles d'AlexNet. Ces deux groupes de problèmes 
     ont été choisis pour observer la variation de la taille du problème, du nombre de canaux, 
     le nombre de filtres et la taille des \textit{kernels}. Avec VGG16, chaque couche convolutionnelle 
     possède la même taille de \textit{kernel}, mais varie en canaux, filtres et taille. Pour 
-    AlexNet, nous avons trois différentes tailles de \textit{kernels}. La figure \ref{fig:prob} 
+    AlexNet, nous avons trois différentes tailles de \textit{kernels}. La figure \ref{fig:probs} 
     illustre les dimensions des problèmes étudiés.
     
     \begin{figure}[H]
@@ -246,14 +239,14 @@
     mapping utilisant plus de ressources qui optimise la consommation d'énergie.
 
     {\centering
-    \includegraphics[width=\linewidth]{Alex_cycles.png}
+    \includegraphics[width=0.9\linewidth]{Alex_cycles.png}
     \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
     \label{fig:cycles_alex}}
     \bigskip
 
     {\centering
-    \includegraphics[width=\linewidth]{VGG_cycles.png}
+    \includegraphics[width=0.9\linewidth]{VGG_cycles.png}
     \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
     \label{fig:cycles_vgg}}
@@ -311,14 +304,6 @@
     un mapping spatial sur C dans la majorité des cas. Cependant, on remarque dans les tableaux \ref{tab:results_alex} et \ref{tab:results_vgg} 
     que l'utilisation n'est pas de 100 \% pour les problèmes ayant un C pair.  
 
-    Afin de tester l'hypothèse qu'un mapping spatial sur C est généralement plus intéressant, un mapping custom a été 
-    conçu afin de le comparer au mapping effectué par Timeloop. Le problème utilisé est la couche 2 d'AlexNet sur 16 \textit{Lanes}.
-    Les deux mappings sont présentés au figures \ref{fig:map_timeloop_alex_L2} et \ref{fig:map_custom_alex_L2}.
-    La couche 2 d'AlexNet comporte 96 canaux, ce qui est divisible par le nombre de \textit{Lanes}. Cependant, le mapping 
-    de Timeloop n'utilise que 62 \% des \textit{Lanes} comme le montre le tableau \ref{tab:alex_L2_custom_map}. En utilisant 
-    un mapping custom faisant le mapping spatial sur C, on obtient une utilisation de 100 \% ainsi qu'un gain énergétique
-    et un gain en efficacité. 
-
     \begin{table}[H]
         \centering
         \begin{tabular}{l|cc}
@@ -336,14 +321,22 @@
     \end{table}    
     \bigskip
 
+    Afin de tester l'hypothèse qu'un mapping spatial sur C est généralement plus intéressant, un mapping custom a été 
+    conçu afin de le comparer au mapping effectué par Timeloop. Le problème utilisé est la couche 2 d'AlexNet sur 16 \textit{Lanes}.
+    Les deux mappings sont présentés au figures \ref{fig:map_timeloop_alex_L2} et \ref{fig:map_custom_alex_L2}.
+    La couche 2 d'AlexNet comporte 96 canaux, ce qui est divisible par le nombre de \textit{Lanes}. Cependant, le mapping 
+    de Timeloop n'utilise que 62 \% des \textit{Lanes} comme le montre le tableau \ref{tab:alex_L2_custom_map}. En utilisant 
+    un mapping custom faisant le mapping spatial sur C, on obtient une utilisation de 100 \% ainsi qu'un gain énergétique
+    et un gain en efficacité. 
+
     En général, les résultats démontrent clairement l'avantage que peut apporter un processeur vectoriel. En effet,
     bien que la consommation et l'efficacité énergétique restent similaires pour les différents nombres de \textit{Lanes},
     il faut comprendre qu'augmenter le nombre de \textit{Lanes} réduit le nombre de cycles nécessaires afin d'effectuer 
     un calcul. En effet, si l’on utilise 100 \% des ressources, l'utilisation de 16 \textit{Lanes} apporte un gain en performance
     jusqu'à un facteur 16 par rapport à un processeur scalaire et ceci pour une efficacité énergétique identique, voire meilleure.
-
+    
     {\centering
-    \includegraphics[width=\linewidth]{area.png}
+    \includegraphics[width=0.9\linewidth]{area.png}
     \captionsetup{hypcap=false}
     \captionof{figure}{Aire de ARA en fonction du nombre de \textit{Lanes}}
     \label{fig:area}}
@@ -362,9 +355,9 @@
     qu'augmenter le nombre de \textit{Lanes} permet d'atteindre de meilleures performances 
     en temps sans compromettre l'efficacité énergétique du processeur, voire permettre une 
     efficacité légèrement meilleure. En effet, augmenter le nombre de \textit{Lanes} permet 
-    la parralélisation des calculs, permettant des gains linéaires dans le cas de données 
+    la parallélisation des calculs, permettant des gains linéaires dans le cas de données 
     indépendantes. Cet effet est indépendant du problème, pour autant qu'un mapping adéquat 
-    est utilisé. La génération de ces mappings est cepandant complexe et nécessiterait une 
+    est utilisé. La génération de ces mappings est cependant complexe et nécessiterait une 
     étude plus approfondie et une meilleure connaissance du problème et de l'architecture.
     Nous pouvons donc affirmer avoir atteint nos objectifs initiaux.
 
