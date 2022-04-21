@@ -109,11 +109,6 @@
 \newpage
 \normalsize
 
-
-
-{\bibliography{refs}}
-    \bibliographystyle{abbrv}
-
 \section{Introduction}
     \begin{multicols}{2}
     Dans les dernières années, l'utilisation de réseaux de neurones profonds (DNN) pour
@@ -137,7 +132,6 @@
 \section{Méthodologie}
     \begin{multicols}{2}
 
-    %TODO: Ajouter paragraphe sur ARA
     L'architecture sur laquelle notre modèle se base est sur celle du coprocesseur 
     vectoriel ARA \cite{ara_paper}. Ce coprocesseur est une extension vectorielle du processeur scalaire
     RISCV CVA6. Le fonctionnement d’ARA se base sur le concept de \textit{Lanes}. 
@@ -159,9 +153,10 @@
     permet ensuite de trouver automatiquement la correspondance idéale du problème sur l'architecture matérielle.
 
     {\centering
-    \includegraphics[width=0.8\linewidth]{arch_visio.png}
-    \captionof{figure}{Architecture de ARA sur Timeloop}
-    \label{fig:arch}}
+    \includegraphics[width=0.8\linewidth]{ara_arch.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Architecture de ARA}
+    \label{fig:ara_arch}}
     \bigskip
 
     L'architecture simplifiée de ARA, comme mentionnée dans la proposition du projet, peut se modéliser en termes de 
@@ -174,7 +169,14 @@
     La seule différence principale est la latence causée par le pipelinage des opérations. Cependant, ce n'est pas une métrique
     de performance étudiée dans le cadre de ce projet.
 
-    L'architecture utilisée est présentée à la figure \ref{fig:arch}. On y observe une mémoire DRAM principale reliée à 
+    {\centering
+    \includegraphics[width=0.8\linewidth]{arch_visio.png}
+    \captionsetup{hypcap=false}
+    \captionof{figure}{Architecture de ARA sur Timeloop}
+    \label{fig:timeloop_arch}}
+    \bigskip
+
+    L'architecture utilisée est présentée à la figure \ref{fig:timeloop_arch}. On y observe une mémoire DRAM principale reliée à 
     la mémoire cache L1 de 64 KB. La cache L1 est reliée à un nombre paramétrable de \textit{Lanes}. 
     Chaque \textit{Lane} comporte sa banque de 8 registres et son unité de \textit{multiply-accumulate}.
 
@@ -187,7 +189,7 @@
     
     \begin{figure}[H]
         \centering
-        \includegraphics[width=\linewidth]{probs.png}
+        %\includegraphics[width=\linewidth]{probs.png}
         \caption{Problèmes étudiés}
         \label{fig:probs}
     \end{figure}
@@ -199,42 +201,49 @@
         
     {\centering
     \includegraphics[width=\linewidth]{area.png}
+    \captionsetup{hypcap=false}
     \captionof{figure}{Aire de ARA en fonction du nombre de \textit{Lanes}}
     \label{fig:area}}
     \bigskip
 
     {\centering
     \includegraphics[width=\linewidth]{Alex_cycles.png}
+    \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
     \label{fig:cycles_alex}}
     \bigskip
 
     {\centering
     \includegraphics[width=\linewidth]{Alex_energy.png}
+    \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
     \label{fig:energy_alex}}
     \bigskip
 
     {\centering
     \includegraphics[width=\linewidth]{Alex_performance.png}
+    \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème AlexNet}
     \label{fig:perf_alex}}
     \bigskip
 
     {\centering
     \includegraphics[width=\linewidth]{VGG_cycles.png}
+    \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
     \label{fig:cycles_vgg}}
     \bigskip
 
     {\centering
     \includegraphics[width=\linewidth]{VGG_energy.png}
+    \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
     \label{fig:energy_vgg}}
     \bigskip
 
     {\centering
     \includegraphics[width=\linewidth]{VGG_performance.png}
+    \captionsetup{hypcap=false}
     \captionof{figure}{Cycles de ARA en fonction du nombre de \textit{Lanes} pour le problème VGG16}
     \label{fig:perf_vgg}}
     \bigskip
